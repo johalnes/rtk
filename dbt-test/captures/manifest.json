@@ -1,0 +1,80 @@
+{
+  "captured_at": "2026-09-12T18:03:55.933294+00:00",
+  "engine": "dbt Core (not Fusion)",
+  "versions": {
+    "dlt": "1.30.0",
+    "dbt-core": "1.12.4",
+    "dbt-duckdb": "1.11.0",
+    "duckdb": "1.5.5"
+  },
+  "capture": "separate stdout/stderr pipes; default text output with ANSI",
+  "runs": [
+    {
+      "label": "run",
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "dbt",
+        "run",
+        "--profiles-dir",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "test",
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "dbt",
+        "test",
+        "--profiles-dir",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "build",
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "dbt",
+        "build",
+        "--profiles-dir",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "test-failure",
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "dbt",
+        "test",
+        "--vars",
+        "{simulate_failure: true}",
+        "--profiles-dir",
+        "."
+      ],
+      "exit_code": 1
+    },
+    {
+      "label": "test-restored",
+      "argv": [
+        "uv",
+        "run",
+        "--locked",
+        "dbt",
+        "test",
+        "--profiles-dir",
+        "."
+      ],
+      "exit_code": 0
+    }
+  ]
+}

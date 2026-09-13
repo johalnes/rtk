@@ -1,0 +1,94 @@
+{
+  "method": "ceil(UTF-8 bytes/4); byte-preserving line deletion; no ANSI normalization or newline rewriting",
+  "scope": "Expansion corpus (edge cases + larger PTY run), small DuckDB playground; not representative production cohorts",
+  "ansi_crlf": "PTY capture: splitlines records carry CRLF+ANSI; kept lines emitted byte-for-byte; no stripping",
+  "held_out": "captures/fusion/test-restored.* not read or measured",
+  "samples": {
+    "run-no-selection": {
+      "raw_bytes": 484,
+      "kept_bytes": 368,
+      "raw_tokens": 121,
+      "kept_tokens": 92,
+      "token_savings_pct": 23.96694214876033,
+      "byte_savings_pct": 23.96694214876033
+    },
+    "run-db-error": {
+      "raw_bytes": 694,
+      "kept_bytes": 578,
+      "raw_tokens": 174,
+      "kept_tokens": 145,
+      "token_savings_pct": 16.666666666666668,
+      "byte_savings_pct": 16.714697406340058
+    },
+    "run-compile-error": {
+      "raw_bytes": 545,
+      "kept_bytes": 429,
+      "raw_tokens": 137,
+      "kept_tokens": 108,
+      "token_savings_pct": 21.16788321167883,
+      "byte_savings_pct": 21.28440366972477
+    },
+    "test-warning": {
+      "raw_bytes": 274,
+      "kept_bytes": 159,
+      "raw_tokens": 69,
+      "kept_tokens": 40,
+      "token_savings_pct": 42.028985507246375,
+      "byte_savings_pct": 41.97080291970803
+    },
+    "build-mixed-skip": {
+      "raw_bytes": 2173,
+      "kept_bytes": 2057,
+      "raw_tokens": 544,
+      "kept_tokens": 515,
+      "token_savings_pct": 5.330882352941177,
+      "byte_savings_pct": 5.3382420616659
+    },
+    "build-larger-terminal": {
+      "raw_bytes": 3769,
+      "kept_bytes": 3612,
+      "raw_tokens": 943,
+      "kept_tokens": 903,
+      "token_savings_pct": 4.241781548250265,
+      "byte_savings_pct": 4.165561156805519
+    }
+  },
+  "cohorts": {
+    "run": {
+      "raw_bytes": 1723,
+      "kept_bytes": 1375,
+      "raw_tokens": 432,
+      "kept_tokens": 345,
+      "members": [
+        "run-no-selection",
+        "run-db-error",
+        "run-compile-error"
+      ],
+      "token_savings_pct": 20.138888888888886,
+      "byte_savings_pct": 20.197330237957058
+    },
+    "test": {
+      "raw_bytes": 274,
+      "kept_bytes": 159,
+      "raw_tokens": 69,
+      "kept_tokens": 40,
+      "members": [
+        "test-warning"
+      ],
+      "token_savings_pct": 42.028985507246375,
+      "byte_savings_pct": 41.97080291970803
+    },
+    "build": {
+      "raw_bytes": 5942,
+      "kept_bytes": 5669,
+      "raw_tokens": 1487,
+      "kept_tokens": 1418,
+      "members": [
+        "build-mixed-skip",
+        "build-larger-terminal"
+      ],
+      "token_savings_pct": 4.640215198386011,
+      "byte_savings_pct": 4.594412655671487
+    }
+  }
+}

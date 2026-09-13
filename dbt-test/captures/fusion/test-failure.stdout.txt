@@ -1,0 +1,31 @@
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+    Passed [  0.02s] test  not_null_resource_catalog_name
+    Passed [  0.02s] test  not_null_resource_catalog_url
+    Passed [  0.01s] test  source_not_null_raw_pokemon_url
+    Passed [  0.01s] test  not_null_resource_summary_longest_name_length
+    Passed [  0.01s] test  not_null_resource_catalog_resource_type
+    Passed [  0.01s] test  not_null_resource_catalog_name_length
+    Passed [  0.01s] test  not_null_resource_summary_average_name_length
+    Failed [  0.01s] test  simulate_failure (tests/simulate_failure.sql)
+    Passed [  0.01s] test  source_not_null_raw_berry_url
+    Passed [  0.01s] test  not_null_resource_summary_resource_count
+    Passed [  0.01s] test  source_not_null_raw_berry_name
+    Passed [  0.01s] test  source_not_null_raw_pokemon_name
+    Passed [  0.01s] test  source_not_null_raw_location_url
+    Passed [  0.01s] test  not_null_resource_summary_resource_type
+    Passed [  0.01s] test  source_not_null_raw_location_name
+    Passed [  0.01s] test  source_unique_raw_location_name
+    Passed [  0.01s] test  source_unique_raw_pokemon_name
+    Passed [  0.01s] test  unique_resource_summary_resource_type
+    Passed [  0.01s] test  unique_resource_catalog_url
+    Passed [  0.01s] test  source_unique_raw_berry_name
+    Passed [  0.01s] test  resource_summary_counts
+
+====================== Test Failures =======================
+Test failed (1 failed row(s)): simulate_failure
+
+==================== Execution Summary =====================
+Finished 'test' with 1 error for target 'dev' [970ms]
+Processed: 21 tests
+Summary: 21 total | 20 success | 1 error

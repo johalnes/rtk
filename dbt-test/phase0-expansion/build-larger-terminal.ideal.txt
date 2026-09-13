@@ -1,0 +1,37 @@
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1msource_not_null_raw_pokemon_name[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1msource_not_null_raw_location_url[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1msource_not_null_raw_berry_url[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1msource_not_null_raw_pokemon_url[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1msource_not_null_raw_location_name[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1msource_not_null_raw_berry_name[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1msource_unique_raw_location_name[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1msource_unique_raw_pokemon_name[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1msource_unique_raw_berry_name[0m
+[32m[1m Succeeded[0m [  0.01s] model [36m[1manalytics.[0m[34m[1mresource_catalog[0m (table)
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_catalog_name[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_catalog_name_length[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_catalog_url[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1munique_resource_catalog_url[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_catalog_resource_type[0m
+[32m[1m Succeeded[0m [  0.01s] model [36m[1manalytics.[0m[34m[1mresource_summary[0m (table)
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_summary_resource_type[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_summary_average_name_length[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_summary_longest_name_length[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1mnot_null_resource_summary_resource_count[0m
+[32m[1m    Passed[0m [  0.00s] test  [36m[1m[0m[34m[1munique_resource_summary_resource_type[0m
+[32m[1m    Passed[0m [  0.01s] test  [36m[1m[0m[34m[1mresource_summary_counts[0m
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_07[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_08[0m (table)
+[32m[1m Succeeded[0m [  0.01s] model [36m[1manalytics.[0m[34m[1mcase_large_02[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_09[0m (table)
+[32m[1m Succeeded[0m [  0.01s] model [36m[1manalytics.[0m[34m[1mcase_large_01[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_11[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_10[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_05[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_03[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_12[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_04[0m (table)
+[32m[1m Succeeded[0m [  0.00s] model [36m[1manalytics.[0m[34m[1mcase_large_06[0m (table)
+Finished '[37m[1mbuild[0m' [32m[1msuccessfully[0m for target '[37m[1mdev[0m' [2m[1.2s][0m
+Processed: 14 models | 20 tests
+Summary: [37m[1m34 total[0m | [32m[1m34 success[0m

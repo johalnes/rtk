@@ -1,0 +1,75 @@
+{
+  "method": "ceil(UTF-8 bytes/4); byte-preserving line deletion; no ANSI normalization",
+  "scope": "Initial toy-project sample, not representative production cohorts",
+  "held_out": "test-restored; not read or measured",
+  "samples": {
+    "run": {
+      "raw_bytes": 341,
+      "kept_bytes": 226,
+      "raw_tokens": 86,
+      "kept_tokens": 57,
+      "token_savings_pct": 33.72093023255814,
+      "byte_savings_pct": 33.72434017595308
+    },
+    "test": {
+      "raw_bytes": 1447,
+      "kept_bytes": 1332,
+      "raw_tokens": 362,
+      "kept_tokens": 333,
+      "token_savings_pct": 8.011049723756907,
+      "byte_savings_pct": 7.947477539737387
+    },
+    "test-failure": {
+      "raw_bytes": 1640,
+      "kept_bytes": 1524,
+      "raw_tokens": 410,
+      "kept_tokens": 381,
+      "token_savings_pct": 7.073170731707317,
+      "byte_savings_pct": 7.073170731707317
+    },
+    "build": {
+      "raw_bytes": 1583,
+      "kept_bytes": 1468,
+      "raw_tokens": 396,
+      "kept_tokens": 367,
+      "token_savings_pct": 7.3232323232323235,
+      "byte_savings_pct": 7.264687302590019
+    }
+  },
+  "cohorts": {
+    "run": {
+      "raw_bytes": 341,
+      "kept_bytes": 226,
+      "raw_tokens": 86,
+      "kept_tokens": 57,
+      "members": [
+        "run"
+      ],
+      "token_savings_pct": 33.720930232558146,
+      "byte_savings_pct": 33.72434017595308
+    },
+    "test": {
+      "raw_bytes": 3087,
+      "kept_bytes": 2856,
+      "raw_tokens": 772,
+      "kept_tokens": 714,
+      "members": [
+        "test",
+        "test-failure"
+      ],
+      "token_savings_pct": 7.512953367875652,
+      "byte_savings_pct": 7.482993197278908
+    },
+    "build": {
+      "raw_bytes": 1583,
+      "kept_bytes": 1468,
+      "raw_tokens": 396,
+      "kept_tokens": 367,
+      "members": [
+        "build"
+      ],
+      "token_savings_pct": 7.32323232323232,
+      "byte_savings_pct": 7.264687302590023
+    }
+  }
+}

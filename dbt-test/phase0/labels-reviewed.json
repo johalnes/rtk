@@ -1,0 +1,556 @@
+{
+  "status": "PROPOSED / reviewed-by-agent, NOT user-approved",
+  "line_splitting": "Python bytes.splitlines(keepends=True) on raw bytes; line numbers 1-based; paths relative to captures/fusion",
+  "label_semantics": {
+    "keep": "must survive filtering (actual result, count, warning, diagnostic, or unknown/ambiguous text)",
+    "noise": "demonstrated routine startup/progress/formatting line, safe to remove as a whole line"
+  },
+  "held_out_unread": [
+    "test-restored.stdout.txt",
+    "test-restored.stderr.txt"
+  ],
+  "files": [
+    {
+      "path": "run.stdout.txt",
+      "stream": "stdout",
+      "sha256": "f5816aa53a044e4999bc65e3052dc8d15f515e32ab38c9765aa01fd48823ca3a",
+      "bytes": 341,
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-node Succeeded result; actual execution outcome"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-node Succeeded result; actual execution outcome"
+        },
+        {
+          "line": 5,
+          "label": "noise",
+          "reason": "blank line; formatting only, no content"
+        },
+        {
+          "line": 6,
+          "label": "noise",
+          "reason": "decorative section divider; no informational content"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "final execution result for the target"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "processed-resource count; required summary"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "result-count summary; required"
+        }
+      ]
+    },
+    {
+      "path": "run.stderr.txt",
+      "stream": "stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": []
+    },
+    {
+      "path": "test.stdout.txt",
+      "stream": "stdout",
+      "sha256": "ff5626ce00384c35c0249bc9cd5c0d02d97494c8a7e059d21794766421cc33d2",
+      "bytes": 1447,
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 10,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 11,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 12,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 13,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 14,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 15,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 16,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 17,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 18,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 19,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 20,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 21,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 22,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 23,
+          "label": "noise",
+          "reason": "blank line; formatting only, no content"
+        },
+        {
+          "line": 24,
+          "label": "noise",
+          "reason": "decorative section divider; no informational content"
+        },
+        {
+          "line": 25,
+          "label": "keep",
+          "reason": "final execution result for the target"
+        },
+        {
+          "line": 26,
+          "label": "keep",
+          "reason": "processed-resource count; required summary"
+        },
+        {
+          "line": 27,
+          "label": "keep",
+          "reason": "result-count summary; required"
+        }
+      ]
+    },
+    {
+      "path": "test.stderr.txt",
+      "stream": "stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": []
+    },
+    {
+      "path": "build.stdout.txt",
+      "stream": "stdout",
+      "sha256": "378eed3632a728868cc160dc1b48c57bffc21b3e460047ec794c21d8af139bc0",
+      "bytes": 1583,
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 10,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 11,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 12,
+          "label": "keep",
+          "reason": "per-node Succeeded result; actual execution outcome"
+        },
+        {
+          "line": 13,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 14,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 15,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 16,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 17,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 18,
+          "label": "keep",
+          "reason": "per-node Succeeded result; actual execution outcome"
+        },
+        {
+          "line": 19,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 20,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 21,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 22,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 23,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 24,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 25,
+          "label": "noise",
+          "reason": "blank line; formatting only, no content"
+        },
+        {
+          "line": 26,
+          "label": "noise",
+          "reason": "decorative section divider; no informational content"
+        },
+        {
+          "line": 27,
+          "label": "keep",
+          "reason": "final execution result for the target"
+        },
+        {
+          "line": 28,
+          "label": "keep",
+          "reason": "processed-resource count; required summary"
+        },
+        {
+          "line": 29,
+          "label": "keep",
+          "reason": "result-count summary; required"
+        }
+      ]
+    },
+    {
+      "path": "build.stderr.txt",
+      "stream": "stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": []
+    },
+    {
+      "path": "test-failure.stdout.txt",
+      "stream": "stdout",
+      "sha256": "d633cead06c93d053eca9c53c87f5b54eb3c3be0323b08543b11dc80fdba6081",
+      "bytes": 1640,
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 10,
+          "label": "keep",
+          "reason": "per-node Failed result; actual execution outcome"
+        },
+        {
+          "line": 11,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 12,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 13,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 14,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 15,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 16,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 17,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 18,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 19,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 20,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 21,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 22,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 23,
+          "label": "keep",
+          "reason": "per-node Passed result; actual execution outcome"
+        },
+        {
+          "line": 24,
+          "label": "noise",
+          "reason": "blank line; formatting only, no content"
+        },
+        {
+          "line": 25,
+          "label": "keep",
+          "reason": "Retain diagnostic section identity and boundary conservatively."
+        },
+        {
+          "line": 26,
+          "label": "keep",
+          "reason": "failure diagnostic detail; required to act on the failure"
+        },
+        {
+          "line": 27,
+          "label": "noise",
+          "reason": "blank line; formatting only, no content"
+        },
+        {
+          "line": 28,
+          "label": "noise",
+          "reason": "decorative section divider; no informational content"
+        },
+        {
+          "line": 29,
+          "label": "keep",
+          "reason": "final execution result for the target"
+        },
+        {
+          "line": 30,
+          "label": "keep",
+          "reason": "processed-resource count; required summary"
+        },
+        {
+          "line": 31,
+          "label": "keep",
+          "reason": "result-count summary; required"
+        }
+      ]
+    },
+    {
+      "path": "test-failure.stderr.txt",
+      "stream": "stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": []
+    }
+  ],
+  "review_status": "Parent reviewed for measurement; not user-approved policy or production filter",
+  "review_change": "Retain Test Failures heading; accept removal of startup banner, profile-loading notice, blank lines and Execution Summary decoration only in this corpus."
+}

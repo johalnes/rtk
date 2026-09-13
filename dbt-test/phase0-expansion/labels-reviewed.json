@@ -1,0 +1,752 @@
+{
+  "status": "PROPOSED / reviewed-by-agent, NOT user-approved",
+  "corpus": "fusion-expansion (manifest.json sha256-verified at measurement time); dbt-fusion 2.0.0-preview.218, duckdb 1.11.0",
+  "line_splitting": "Python bytes.splitlines(keepends=True) on raw bytes; line numbers 1-based; paths relative to captures/fusion-expansion",
+  "label_semantics": {
+    "keep": "must survive filtering (actual result, count, warning, diagnostic, or unknown/ambiguous text)",
+    "noise": "demonstrated routine startup/progress/formatting line, safe to remove as a whole line"
+  },
+  "ansi_crlf_handling": "PTY capture labeled on bytes.splitlines records (CRLF and ANSI stay attached to their line); kept lines are emitted byte-for-byte with no ANSI stripping or newline normalization; tokens use ceil(bytes/4) on raw bytes",
+  "held_out_unread": [
+    "captures/fusion/test-restored.stdout.txt",
+    "captures/fusion/test-restored.stderr.txt"
+  ],
+  "review_status": "Parent-directed agent labeling for phase0-expansion; not user-approved policy or production filter",
+  "review_change": "Kept lines inside the Errors-and-Warnings stderr block, including an interior blank line, and the block heading itself; noise limited to startup banner, profile-loading notice, blank separators and Execution Summary decoration; ANSI/CRLF preserved on kept PTY lines.",
+  "files": [
+    {
+      "path": "run-no-selection.stdout.txt",
+      "stream": "stdout",
+      "bytes": 171,
+      "sha256": "e687ff91f1cf2d64940e0536123ea0a321fec3bf4d8985d16d9e68bdbbfd8fa7",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "noise",
+          "reason": "blank separator line before Execution Summary heading"
+        },
+        {
+          "line": 4,
+          "label": "noise",
+          "reason": "decorated 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "command outcome: error/warning count, target, timing"
+        }
+      ]
+    },
+    {
+      "path": "run-no-selection.stderr.txt",
+      "stream": "stderr",
+      "bytes": 313,
+      "sha256": "22533c189cb3ba8c587c523ba4a174c1238c319edbc9de802cea4d2c4c8555b4",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "leading blank line at top of stderr block; formatting only, no diagnostic content"
+        },
+        {
+          "line": 2,
+          "label": "keep",
+          "reason": "diagnostic block heading; preserves 'Errors and Warnings' structure (mirrors phase-0 retention of the Test Failures heading)"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "warning identity NoNodesForSelectionCriteria (dbt1092) with explanation"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "warning identity NoNodesSelected (dbt1601) with explanation"
+        }
+      ]
+    },
+    {
+      "path": "test-warning.stdout.txt",
+      "stream": "stdout",
+      "bytes": 274,
+      "sha256": "f5dc56a3842a1a9a3e32c4e346cca436606fd477f0ef7768b44094632e8e67ba",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-resource Warned test result with identity, source path and timing"
+        },
+        {
+          "line": 4,
+          "label": "noise",
+          "reason": "blank separator line before Execution Summary heading"
+        },
+        {
+          "line": 5,
+          "label": "noise",
+          "reason": "decorated 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "command outcome: error/warning count, target, timing"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "Processed: node-type counts"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "Summary: totals and outcome distribution"
+        }
+      ]
+    },
+    {
+      "path": "test-warning.stderr.txt",
+      "stream": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lines": []
+    },
+    {
+      "path": "build-mixed-skip.stdout.txt",
+      "stream": "stdout",
+      "bytes": 1734,
+      "sha256": "9e82db98d22a5441c2f2f81aa786afdbbb988372548b154fc447a447f82c0247",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 10,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 11,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 12,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome"
+        },
+        {
+          "line": 13,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 14,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 15,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 16,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 17,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 18,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome"
+        },
+        {
+          "line": 19,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 20,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 21,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 22,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 23,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 24,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome"
+        },
+        {
+          "line": 25,
+          "label": "keep",
+          "reason": "per-resource Failed model result; actual failure identity"
+        },
+        {
+          "line": 26,
+          "label": "keep",
+          "reason": "per-resource Skipped result; downstream node identity"
+        },
+        {
+          "line": 27,
+          "label": "noise",
+          "reason": "blank separator line before Execution Summary heading"
+        },
+        {
+          "line": 28,
+          "label": "noise",
+          "reason": "decorated 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 29,
+          "label": "keep",
+          "reason": "command outcome: error/warning count, target, timing"
+        },
+        {
+          "line": 30,
+          "label": "keep",
+          "reason": "Processed: node-type counts"
+        },
+        {
+          "line": 31,
+          "label": "keep",
+          "reason": "Summary: totals and outcome distribution"
+        }
+      ]
+    },
+    {
+      "path": "build-mixed-skip.stderr.txt",
+      "stream": "stderr",
+      "bytes": 439,
+      "sha256": "9e2b7a775c48f05fb84814fe432699b0873a045d8ab065aeaa05c73dfa9e3548",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "leading blank line at top of stderr block; formatting only, no diagnostic content"
+        },
+        {
+          "line": 2,
+          "label": "keep",
+          "reason": "diagnostic block heading; preserves 'Errors and Warnings' structure (mirrors phase-0 retention of the Test Failures heading)"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "failed model identity case_mixed_broken and error class DbDriverFailed (dbt1308)"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "database error message text (Binder Error)"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "diagnostic continuation: candidate column bindings"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "blank line inside the Errors-and-Warnings diagnostic block; kept conservatively within the block"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "SQL LINE excerpt with failing column reference"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "error position marker under the SQL excerpt"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "source location of the failing statement"
+        }
+      ]
+    },
+    {
+      "path": "run-db-error.stdout.txt",
+      "stream": "stdout",
+      "bytes": 272,
+      "sha256": "ae41c453e749f16b459deaea20514fde4f8f8443efb59bb660eeac951e1d6c69",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-resource Failed model result; actual failure identity"
+        },
+        {
+          "line": 4,
+          "label": "noise",
+          "reason": "blank separator line before Execution Summary heading"
+        },
+        {
+          "line": 5,
+          "label": "noise",
+          "reason": "decorated 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "command outcome: error/warning count, target, timing"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "Processed: node-type counts"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "Summary: totals and outcome distribution"
+        }
+      ]
+    },
+    {
+      "path": "run-db-error.stderr.txt",
+      "stream": "stderr",
+      "bytes": 422,
+      "sha256": "ea1889507c458ba397e585abda2c362a764a82588160ede7c2c1995cc7622753",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "leading blank line at top of stderr block; formatting only, no diagnostic content"
+        },
+        {
+          "line": 2,
+          "label": "keep",
+          "reason": "diagnostic block heading; preserves 'Errors and Warnings' structure (mirrors phase-0 retention of the Test Failures heading)"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "failed model identity case_db_error and error class DbDriverFailed (dbt1308)"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "database error message text (Binder Error)"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "diagnostic continuation: candidate column bindings"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "blank line inside the Errors-and-Warnings diagnostic block; kept conservatively within the block"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "SQL LINE excerpt with failing predicate"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "error position marker under the SQL excerpt"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "source location of the failing statement"
+        }
+      ]
+    },
+    {
+      "path": "run-compile-error.stdout.txt",
+      "stream": "stdout",
+      "bytes": 278,
+      "sha256": "8dba16afd855a98679a454c58cc25921ef9e2f89342242a7372b30e15100c6ab",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-resource Failed model result; actual failure identity"
+        },
+        {
+          "line": 4,
+          "label": "noise",
+          "reason": "blank separator line before Execution Summary heading"
+        },
+        {
+          "line": 5,
+          "label": "noise",
+          "reason": "decorated 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "command outcome: error/warning count, target, timing"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "Processed: node-type counts"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "Summary: totals and outcome distribution"
+        }
+      ]
+    },
+    {
+      "path": "run-compile-error.stderr.txt",
+      "stream": "stderr",
+      "bytes": 267,
+      "sha256": "0953ae30abf260d39684acd73cc5ac09c7aa33d3a399aea925e7215f67288f14",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "leading blank line at top of stderr block; formatting only, no diagnostic content"
+        },
+        {
+          "line": 2,
+          "label": "keep",
+          "reason": "diagnostic block heading; preserves 'Errors and Warnings' structure (mirrors phase-0 retention of the Test Failures heading)"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "failed model identity case_compile_error and error class JinjaError (dbt1501) with message"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "file:line location of the render failure"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "source location pointer (--> file:line)"
+        }
+      ]
+    },
+    {
+      "path": "build-larger-terminal.stdout.txt",
+      "stream": "stdout",
+      "bytes": 3769,
+      "sha256": "c0a29828b61d5dc1493379d83dfcf9869c80ac4139e5ce28e73010506f5fcd7a",
+      "lines": [
+        {
+          "line": 1,
+          "label": "noise",
+          "reason": "startup engine version banner with leading PTY artifact bytes (\\x04\\x08) and ANSI; identical on every invocation"
+        },
+        {
+          "line": 2,
+          "label": "noise",
+          "reason": "routine startup/progress line, before any execution result"
+        },
+        {
+          "line": 3,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 4,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 5,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 6,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 7,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 8,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 9,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 10,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 11,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 12,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 13,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 14,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 15,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 16,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 17,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 18,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 19,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 20,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 21,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 22,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 23,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 24,
+          "label": "keep",
+          "reason": "per-resource Passed test result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 25,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 26,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 27,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 28,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 29,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 30,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 31,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 32,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 33,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 34,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 35,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 36,
+          "label": "keep",
+          "reason": "per-resource Succeeded model result; actual execution outcome; ANSI styling retained byte-for-byte"
+        },
+        {
+          "line": 37,
+          "label": "noise",
+          "reason": "blank separator line (CRLF only) between results and Execution Summary heading"
+        },
+        {
+          "line": 38,
+          "label": "noise",
+          "reason": "ANSI-styled 'Execution Summary' heading; the Finished line below retains the outcome"
+        },
+        {
+          "line": 39,
+          "label": "keep",
+          "reason": "command outcome: success status, target, timing"
+        },
+        {
+          "line": 40,
+          "label": "keep",
+          "reason": "Processed: node-type counts"
+        },
+        {
+          "line": 41,
+          "label": "keep",
+          "reason": "Summary: totals and outcome distribution"
+        }
+      ]
+    },
+    {
+      "path": "build-larger-terminal.stderr.txt",
+      "stream": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lines": []
+    }
+  ]
+}

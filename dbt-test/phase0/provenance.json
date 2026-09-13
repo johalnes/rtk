@@ -1,0 +1,31 @@
+{
+  "capture_source": "captures/fusion/manifest.json",
+  "captured_environment": "Not recorded by original manifest; do not infer from current environment",
+  "current_file_hashes": {
+    "profiles.yml": "89a5297beba8942d91ba6cc074369473318acecd6902edb24fabb35bde286a56",
+    "dbt_project.yml": "e0f8155fd31b1201d8f11dd182a9e826f609788e87cd5eaad7510c4c825e2021",
+    "pyproject.toml": "b015bfba837008420cbefe0d401f803211e58edbec10f8fb43e8002e87b46cf8",
+    "uv.lock": "a7c4e148dcecb8de64435d7a13cdbee3aa47c564eb04563b920608a5df0831a6",
+    "models/resource_catalog.sql": "ed5fb5a314efb7f9a01224163e36e1c7446e450dfb7e8a40c612b80e3f3d01d8",
+    "models/resource_summary.sql": "288bf7d6d174d46535cef4829e6a4c9cc67158ee6903c8e213c53358d43d36dc",
+    "models/schema.yml": "4ab8a82857a364c1c6c9bdfccbd6fbc18c2e21162f7762672a855cd36c08a44e",
+    "tests/simulate_failure.sql": "90f521977084be566ac32916b16ce33e533ba94189f71e225083d24bc54388a0",
+    "captures/fusion/manifest.json": "dd52bd544ed39496e97dbd5fb3d009f670cc70e1652310c595056eee87d051f2"
+  },
+  "analysis_membership": {
+    "run": [
+      "run"
+    ],
+    "test": [
+      "test",
+      "test-failure"
+    ],
+    "build": [
+      "build"
+    ]
+  },
+  "membership_reason": "One existing ordinary success per command plus the only test failure. Toy-project descriptive cohorts, not representative production distributions. Selected before label measurement.",
+  "held_out": "test-restored streams excluded from reading, labeling and measurement",
+  "normalization": "Original bytes retained. No ANSI stripping, no whitespace trimming. Join nonempty streams with LF only if stdout lacks LF. Existing selected stderr streams are empty.",
+  "scope": "All analysis files remain under ignored dbt-test; no promotion into tracked fixtures."
+}

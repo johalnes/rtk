@@ -1,0 +1,5 @@
+ Succeeded [  0.04s] model analytics.resource_catalog (table)
+ Succeeded [  0.01s] model analytics.resource_summary (table)
+Finished 'run' successfully for target 'dev' [881ms]
+Processed: 2 models
+Summary: 2 total | 2 success

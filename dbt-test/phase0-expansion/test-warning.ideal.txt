@@ -1,0 +1,4 @@
+    Warned [  0.01s] test  case_warn (tests/case_warn.sql)
+Finished 'test' with 1 warning for target 'dev' [775ms]
+Processed: 1 test
+Summary: 1 total | 1 warn
