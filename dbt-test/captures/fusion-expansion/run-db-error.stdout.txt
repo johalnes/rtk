@@ -1,0 +1,8 @@
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+    Failed [  1.01s] model analytics.case_db_error (table)
+
+==================== Execution Summary =====================
+Finished 'run' with 1 error for target 'dev' [1.4s]
+Processed: 1 model
+Summary: 1 total | 1 error

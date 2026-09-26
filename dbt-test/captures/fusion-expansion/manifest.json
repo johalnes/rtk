@@ -1,0 +1,129 @@
+{
+  "corpus": "fusion-expansion",
+  "captured_at": "2026-09-12T18:52:00Z",
+  "engine": "dbt-fusion 2.0.0-preview.218",
+  "versions": {
+    "dbt": "2.0.0rc218",
+    "dbt-core": "1.12.4",
+    "dbt-duckdb": "1.11.0",
+    "dlt": "1.30.0",
+    "duckdb": "1.5.5"
+  },
+  "adapter": "duckdb",
+  "target": "dev",
+  "project": "pokemon_playground (local, git-ignored dbt-test/)",
+  "logging": {
+    "configuration": "dbt Fusion default text logging; no DBT_* logging overrides; dbt_project.yml send_anonymous_usage_stats=false",
+    "env_at_capture": "TERM=xterm-256color; no NO_COLOR/FORCE_COLOR/CLICOLOR/CI/DBT_* set",
+    "color": "pipe streams carry no ANSI; terminal (PTY) stdout carries ANSI + CRLF"
+  },
+  "capture_method": "Each case ran as one child process with stdout and stderr redirected to separate files; exit status written to a separate file. Pipe cases use plain redirection. The terminal case runs under a PTY via macOS `script -q /dev/null`, with only stderr redirected to a file so stdout sees a TTY.",
+  "stream_note": "Unlike the earlier captures/fusion/ set, Fusion 2.0.0-preview.218 writes the 'Errors and Warnings' diagnostic block to stderr. test-warning and build-larger-terminal produced empty stderr. Raw bytes preserved; no ANSI stripping or newline normalization was applied.",
+  "dataset": {
+    "raw_rows": { "pokemon": 1351, "berry": 68, "location": 1104 }
+  },
+  "runs": [
+    {
+      "label": "run-no-selection",
+      "case": "no-selection: --select matches nothing (warnings, success exit)",
+      "argv": ["uv", "run", "--locked", "dbt", "run", "--select", "nonexistent_model_xyz"],
+      "shell_spelling": "uv run --locked dbt run --select nonexistent_model_xyz",
+      "mode": "pipe",
+      "stdout_file": "run-no-selection.stdout.txt",
+      "stderr_file": "run-no-selection.stderr.txt",
+      "exit_file": "run-no-selection.exit.txt",
+      "exit_code": 0,
+      "bytes": { "stdout": 171, "stderr": 313 },
+      "sha256": {
+        "stdout": "e687ff91f1cf2d64940e0536123ea0a321fec3bf4d8985d16d9e68bdbbfd8fa7",
+        "stderr": "22533c189cb3ba8c587c523ba4a174c1238c319edbc9de802cea4d2c4c8555b4"
+      },
+      "notes": "stderr holds the full Errors and Warnings block (NoNodesForSelectionCriteria dbt1092, NoNodesSelected dbt1601) while stdout carries the short completion summary."
+    },
+    {
+      "label": "build-mixed-skip",
+      "case": "mixed build outcomes: 22 success, 1 database error, 1 skipped downstream model",
+      "argv": ["uv", "run", "--locked", "dbt", "build", "--vars", "{case_mixed_skip: true}"],
+      "shell_spelling": "uv run --locked dbt build --vars '{case_mixed_skip: true}'",
+      "mode": "pipe",
+      "stdout_file": "build-mixed-skip.stdout.txt",
+      "stderr_file": "build-mixed-skip.stderr.txt",
+      "exit_file": "build-mixed-skip.exit.txt",
+      "exit_code": 1,
+      "bytes": { "stdout": 1734, "stderr": 439 },
+      "sha256": {
+        "stdout": "9e82db98d22a5441c2f2f81aa786afdbbb988372548b154fc447a447f82c0247",
+        "stderr": "9e2b7a775c48f05fb84814fe432699b0873a045d8ab065aeaa05c73dfa9e3548"
+      },
+      "notes": "case_mixed_broken fails with a DuckDB Binder Error; case_mixed_downstream is Skipped; base models and all base tests pass. Summary line: 24 total | 22 success | 1 error | 1 skipped."
+    },
+    {
+      "label": "test-warning",
+      "case": "warning with successful completion (configured warn_if, exit 0)",
+      "argv": ["uv", "run", "--locked", "dbt", "test", "--vars", "{case_warn: true}", "--select", "case_warn"],
+      "shell_spelling": "uv run --locked dbt test --vars '{case_warn: true}' --select case_warn",
+      "mode": "pipe",
+      "stdout_file": "test-warning.stdout.txt",
+      "stderr_file": "test-warning.stderr.txt",
+      "exit_file": "test-warning.exit.txt",
+      "exit_code": 0,
+      "bytes": { "stdout": 274, "stderr": 0 },
+      "sha256": {
+        "stdout": "f5dc56a3842a1a9a3e32c4e346cca436606fd477f0ef7768b44094632e8e67ba",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "notes": "Singular test case_warn configured warn_if='>0', error_if='>100'. stdout shows 'Warned' result and 'Finished test with 1 warning'; stderr empty."
+    },
+    {
+      "label": "run-db-error",
+      "case": "database execution error during run (not a test failure)",
+      "argv": ["uv", "run", "--locked", "dbt", "run", "--vars", "{case_db_error: true}", "--select", "case_db_error"],
+      "shell_spelling": "uv run --locked dbt run --vars '{case_db_error: true}' --select case_db_error",
+      "mode": "pipe",
+      "stdout_file": "run-db-error.stdout.txt",
+      "stderr_file": "run-db-error.stderr.txt",
+      "exit_file": "run-db-error.exit.txt",
+      "exit_code": 1,
+      "bytes": { "stdout": 272, "stderr": 422 },
+      "sha256": {
+        "stdout": "ae41c453e749f16b459deaea20514fde4f8f8443efb59bb660eeac951e1d6c69",
+        "stderr": "ea1889507c458ba397e585abda2c362a764a82588160ede7c2c1995cc7622753"
+      },
+      "notes": "DbDriverFailed (dbt1308) with Binder Error, candidate bindings, SQL LINE excerpt and source location in stderr."
+    },
+    {
+      "label": "run-compile-error",
+      "case": "compile/render error during run (not a test failure)",
+      "argv": ["uv", "run", "--locked", "dbt", "run", "--vars", "{case_compile_error: true}", "--select", "case_compile_error"],
+      "shell_spelling": "uv run --locked dbt run --vars '{case_compile_error: true}' --select case_compile_error",
+      "mode": "pipe",
+      "stdout_file": "run-compile-error.stdout.txt",
+      "stderr_file": "run-compile-error.stderr.txt",
+      "exit_file": "run-compile-error.exit.txt",
+      "exit_code": 1,
+      "bytes": { "stdout": 278, "stderr": 267 },
+      "sha256": {
+        "stdout": "8dba16afd855a98679a454c58cc25921ef9e2f89342242a7372b30e15100c6ab",
+        "stderr": "0953ae30abf260d39684acd73cc5ac09c7aa33d3a399aea925e7215f67288f14"
+      },
+      "notes": "JinjaError (dbt1501) unknown macro with file:line location in stderr."
+    },
+    {
+      "label": "build-larger-terminal",
+      "case": "larger/noisier run: 14 models + 20 tests under a PTY (ANSI + CRLF)",
+      "argv": ["uv", "run", "--locked", "dbt", "build", "--vars", "{case_larger: true}"],
+      "shell_spelling": "script -q /dev/null sh -c \"cd dbt-test && uv run --locked dbt build --vars '{case_larger: true}' 2> build-larger-terminal.stderr.txt\"; echo $? > build-larger-terminal.exit.txt",
+      "mode": "terminal-pty",
+      "stdout_file": "build-larger-terminal.stdout.txt",
+      "stderr_file": "build-larger-terminal.stderr.txt",
+      "exit_file": "build-larger-terminal.exit.txt",
+      "exit_code": 0,
+      "bytes": { "stdout": 3769, "stderr": 0 },
+      "sha256": {
+        "stdout": "c0a29828b61d5dc1493379d83dfcf9869c80ac4139e5ce28e73010506f5fcd7a",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "notes": "stdout is a raw PTY stream: ANSI SGR sequences and CRLF line endings, plus a leading PTY artifact. Summary: 34 total | 34 success. stderr empty."
+    }
+  ]
+}
