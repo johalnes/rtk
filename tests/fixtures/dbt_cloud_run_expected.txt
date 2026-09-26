@@ -1,0 +1,75 @@
+Created invocation id 11111111-2222-4333-8444-555555555555
+12:29:52     Failed model name016.name025 (view) [16 of 80 in 1.87s]
+12:29:52     Failed model name016.name023 (view) [14 of 80 in 2.54s]
+12:29:52     Failed model name016.name017 (view) [8 of 80 in 2.56s]
+12:29:53     Failed model name016.name020 (view) [11 of 80 in 3.29s]
+12:29:54     Failed model name016.name019 (view) [10 of 80 in 3.83s]
+12:29:54     Failed model name016.name026 (view) [17 of 80 in 4.37s]
+12:29:55     Failed model name016.name018 (view) [9 of 80 in 4.60s]
+12:29:55     Failed model name016.name022 (view) [13 of 80 in 4.67s]
+12:29:55     Failed model name016.name027 (view) [18 of 80 in 4.76s]
+12:29:55     Failed model name016.name024 (view) [15 of 80 in 4.88s]
+12:29:56     Failed model name016.name021 (view) [12 of 80 in 5.65s]
+12:29:58     Failed model name033.name037 (view) [25 of 80 in 8.01s]
+12:29:58     Failed model name033.name034 (view) [22 of 80 in 8.06s]
+12:36:56     Warned model name031.name032 (table) [21 of 80 in 7m 6s]
+Finished 'run' with 2 warnings and 13 errors for target 'name116' [12m 41s]
+Processed: 93 models
+Summary: 93 total | 56 success | 1 warn | 13 error | 12 skipped | 11 no-op
+12:29:28 [warning] [UnusedResourceConfigPath (dbt1097)]: Configuration paths exist in your dbt_project.yml name117 name118 do not apply to any resources.
+There are 3 unused configuration paths:
+- models.name119.name120.name121
+- models.name119.name122.name121
+- models.name119.name123.name121
+12:29:52 [error] [DbDriverFailed (dbt1308)]: Database Error in model name025 (target/run/name119/models/name124/name125/name025.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name025.name126)
+12:29:52 [error] [DbDriverFailed (dbt1308)]: Database Error in model name023 (target/run/name119/models/name124/name125/name023.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name023.name126)
+12:29:52 [error] [DbDriverFailed (dbt1308)]: Database Error in model name017 (target/run/name119/models/name124/name125/name017.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name017.name126)
+12:29:53 [error] [DbDriverFailed (dbt1308)]: Database Error in model name020 (target/run/name119/models/name124/name125/name020.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name020.name126)
+12:29:53 [warning] [InvalidConfig (dbt1005)]: Invalid name127 name128, name129 name130 of 0
+12:29:54 [error] [DbDriverFailed (dbt1308)]: Database Error in model name019 (target/run/name119/models/name124/name125/name019.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name019.name126)
+12:29:54 [error] [DbDriverFailed (dbt1308)]: Database Error in model name026 (target/run/name119/models/name124/name125/name026.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name026.name126)
+12:29:55 [error] [DbDriverFailed (dbt1308)]: Database Error in model name018 (target/run/name119/models/name124/name125/name018.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name018.name126)
+12:29:55 [error] [DbDriverFailed (dbt1308)]: Database Error in model name022 (target/run/name119/models/name124/name125/name022.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name022.name126)
+12:29:55 [error] [DbDriverFailed (dbt1308)]: Database Error in model name027 (target/run/name119/models/name124/name125/name027.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name027.name126)
+12:29:55 [error] [DbDriverFailed (dbt1308)]: Database Error in model name024 (target/run/name119/models/name124/name125/name024.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name024.name126)
+12:29:56 [error] [DbDriverFailed (dbt1308)]: Database Error in model name021 (target/run/name119/models/name124/name125/name021.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/models/name124/name125/name021.name126)
+12:29:58 [error] [DbDriverFailed (dbt1308)]: Database Error in model name037 (target/run/name119/models/name124/name131/name037.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: PERMISSION_DENIED: User does not have READ VOLUME on Volume name132.name133.name134
+  (in run/name119/models/name124/name131/name037.name126)
+12:29:58 [error] [DbDriverFailed (dbt1308)]: Database Error in model name034 (target/run/name119/models/name124/name131/name034.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: PERMISSION_DENIED: User does not have READ VOLUME on Volume name132.name133.name134
+  (in run/name119/models/name124/name131/name034.name126)
+[full output: rtk recall 203c023313ca]

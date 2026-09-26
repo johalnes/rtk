@@ -3375,6 +3375,87 @@ mod tests {
         assert_eq!(rewrite_command_no_prefixes("jj log", &excluded), None);
     }
 
+    // Pre-1 rewrite contract for the dbt filter (mirrors
+    // test_dbt_invocation_match_table in core::toml_filter): exact bare
+    // run/test/build rewrite to `rtk dbt …`; every flag-bearing,
+    // prefixed-unsupported, wrapped, or otherwise non-bare form stays
+    // untouched. Absolute paths and env prefixes are preserved verbatim
+    // while the inner bare command drives the match.
+    #[test]
+    fn test_rewrite_toml_dbt_bare_commands() {
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt run", &[]),
+            Some("rtk dbt run".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt test", &[]),
+            Some("rtk dbt test".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt build", &[]),
+            Some("rtk dbt build".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_absolute_path_and_env_prefix() {
+        assert_eq!(
+            rewrite_command_no_prefixes("/usr/bin/dbt run", &[]),
+            Some("rtk /usr/bin/dbt run".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("FOO=bar dbt test", &[]),
+            Some("FOO=bar rtk dbt test".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_wrapper_bare_inner() {
+        // `uv run` is a known runner prefix: the inner bare command drives
+        // the match, so filtering still applies end-to-end
+        // (`uv run rtk dbt run` re-enters the fallback with `dbt run`).
+        assert_eq!(
+            rewrite_command_no_prefixes("uv run dbt run", &[]),
+            Some("uv run rtk dbt run".into())
+        );
+    }
+    #[test]
+    fn test_rewrite_toml_dbt_compound() {
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt run && dbt test", &[]),
+            Some("rtk dbt run && rtk dbt test".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_bypass_forms_not_rewritten() {
+        // NOTE: `uv run …` spellings are governed by the pre-existing
+        // `^uv\s+run` rule (→ `rtk uv …`), never by the dbt filter: the
+        // matcher table already proves those raw strings don't match `^dbt`,
+        // and the uv handler only filters sync/pip-install, so flagged dbt
+        // inners execute unchanged end-to-end.
+        for cmd in [
+            "dbt",
+            "dbt --version",
+            "dbt --help",
+            "dbt run --select my_model",
+            "dbt run --log-format json",
+            "dbt run --log-format=json",
+            "dbt test --vars '{simulate_failure: true}'",
+            "dbt --log-format json run",
+            "dbt run-operation my_macro",
+            "dbt docs generate",
+            "dbt seed",
+            "dbt run | tail -5",
+        ] {
+            assert_eq!(
+                rewrite_command_no_prefixes(cmd, &[]),
+                None,
+                "command: {cmd}"
+            );
+        }
+    }
+
     #[test]
     fn test_rewrite_toml_exclude_matches_absolute_path() {
         let excluded = vec!["jj".to_string()];
