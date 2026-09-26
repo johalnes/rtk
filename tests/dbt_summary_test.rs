@@ -31,14 +31,18 @@ fn command(dir: &Path, args: &[&str]) -> Command {
     cmd
 }
 
-fn setup(raw: &str) -> tempfile::TempDir {
+fn setup_case(raw: &str, error: &str) -> tempfile::TempDir {
     let dir = tempfile::tempdir().unwrap();
     fs::write(dir.path().join("stdout.txt"), raw).unwrap();
-    fs::write(dir.path().join("stderr.txt"), ERROR).unwrap();
+    fs::write(dir.path().join("stderr.txt"), error).unwrap();
     let tool = dir.path().join("dbt");
     fs::write(&tool, "#!/bin/sh\nprintf '%s\\n' \"$@\" > argv.txt\ncat stdout.txt\ncat stderr.txt >&2\nexit \"${DBT_EXIT:-0}\"\n").unwrap();
     fs::set_permissions(tool, fs::Permissions::from_mode(0o755)).unwrap();
     dir
+}
+
+fn setup(raw: &str) -> tempfile::TempDir {
+    setup_case(raw, ERROR)
 }
 
 fn stdout(output: &Output) -> String {
@@ -143,4 +147,46 @@ fn flagged_commands_bypass_filtering_and_forward_arguments() {
         fs::read_to_string(dir.path().join("argv.txt")).unwrap(),
         "run\n--select\ngood\n"
     );
+}
+
+// Edited real captures: dbt Cloud CLI driving Fusion 2.0.5 on Databricks at
+// full volume (93-model run, 446-test test). Production identifiers are
+// replaced with generic nameNNN tokens; timestamps, counts, line shapes, and
+// byte structure are preserved, so every strip rule and the summary guard see
+// exactly what the real output looked like. The expected file includes the
+// content-derived `[full output: rtk recall <hash>]` hint — regenerate it if
+// recall id derivation ever changes.
+const RUN_RAW: &str = include_str!("fixtures/dbt_cloud_run_raw.txt");
+const RUN_ERR: &str = include_str!("fixtures/dbt_cloud_run_raw.stderr");
+const RUN_EXPECTED: &str = include_str!("fixtures/dbt_cloud_run_expected.txt");
+const TEST_RAW: &str = include_str!("fixtures/dbt_cloud_test_raw.txt");
+const TEST_ERR: &str = include_str!("fixtures/dbt_cloud_test_raw.stderr");
+const TEST_EXPECTED: &str = include_str!("fixtures/dbt_cloud_test_expected.txt");
+
+fn assert_real_case(raw: (&str, &str, &str), subcommand: &str) {
+    let dir = setup_case(raw.0, raw.1);
+    let out = command(dir.path(), &["dbt", subcommand]).output().unwrap();
+    assert_eq!(out.status.code(), Some(0));
+    let text = stdout(&out);
+    assert_eq!(text, raw.2);
+    let hash = text
+        .split("[full output: rtk recall ")
+        .nth(1)
+        .unwrap()
+        .split(']')
+        .next()
+        .unwrap();
+    let recalled = command(dir.path(), &["recall", hash]).output().unwrap();
+    assert!(recalled.status.success());
+    assert_eq!(stdout(&recalled), format!("{}{}", raw.0, raw.1));
+}
+
+#[test]
+fn real_edited_run_capture_filters_started_noise_and_elides_results() {
+    assert_real_case((RUN_RAW, RUN_ERR, RUN_EXPECTED), "run");
+}
+
+#[test]
+fn real_edited_test_capture_filters_started_noise_and_elides_results() {
+    assert_real_case((TEST_RAW, TEST_ERR, TEST_EXPECTED), "test");
 }

@@ -1,0 +1,915 @@
+Sending project to dbt cloud
+Created invocation id 11111111-2222-4333-8444-555555555555
+Waiting for response
+Streaming invocation logs
+12:42:14 Mesh publication resolved for upstream project name001: producer environment ID 10000000000001; selection source legacy
+12:42:14 Mesh publication resolved for upstream project name002: producer environment ID 10000000000002; selection source legacy
+12:42:14 Mesh publication resolved for upstream project name003: producer environment ID 10000000000003; selection source legacy
+12:42:14 Cloud CLI invocation created: 11111111-2222-4333-8444-555555555555
+12:42:15 Running with dbt=2.0.5
+12:42:15 dbt 2.0.5
+12:42:15 Loading profiles.yml
+12:42:16 Extending __dbt_cloud_publications/name003.json (Cross Project Refs)
+12:42:16 Extending __dbt_cloud_publications/name001.json (Cross Project Refs)
+12:42:16 Extending __dbt_cloud_publications/name002.json (Cross Project Refs)
+12:42:16 Artifact written to target/semantic_manifest.json
+12:42:23 Started test name135.name136
+12:42:23 Started test name135.name137
+12:42:23 Started test name135.name138
+12:42:23 Started test name135.name139
+12:42:23 Started test name135.name140
+12:42:23 Started test name135.name141
+12:42:23 Started test name135.name142
+12:42:23 Started test name135.name143
+12:42:23 Started test name135.name144
+12:42:23 Started test name135.name145
+12:42:23 Started test name135.name146
+12:42:23 Started test name135.name147
+12:42:23 Started test name135.name148
+12:42:23 Started test name135.name149
+12:42:23 Started test name135.name150
+12:42:23 Started test name135.name151
+12:42:23 Started test name135.name152
+12:42:23 Started test name135.name153
+12:42:23 Started test name135.name154
+12:42:23 Started test name135.name155
+12:42:23 Started test name135.name156
+12:42:23 Started test name135.name157
+12:42:23 Started test name135.name158
+12:42:23 Started test name135.name159
+12:42:23 Started test name135.name160
+12:42:23 Started test name135.name161
+12:42:23 Started test name135.name162
+12:42:23 Started test name135.name163
+12:42:23 Started test name135.name164
+12:42:23 Started test name135.name165
+12:42:23 Started test name135.name166
+12:42:23 Started test name135.name167
+12:42:23 Started test name135.name168
+12:42:23 Started test name135.name169
+12:42:23 Started test name135.name170
+12:42:23 Started test name135.name171
+12:42:23 Started test name135.name172
+12:42:23 Started test name135.name173
+12:42:23 Started test name135.name174
+12:42:23 Started test name135.name175
+12:42:23 Started test name135.name176
+12:42:23 Started test name135.name177
+12:42:23 Started test name135.name178
+12:42:23 Started test name135.name179
+12:42:23 Started test name135.name180
+12:42:23 Started test name135.name181
+12:42:23 Started test name135.name182
+12:42:23 Started test name135.name183
+12:42:23 Started test name135.name184
+12:42:23 Started test name135.name185
+12:42:23 Started test name135.name186
+12:42:23 Started test name135.name187
+12:42:23 Started test name135.name188
+12:42:23 Started test name135.name189
+12:42:23 Started test name135.name190
+12:42:23 Started test name135.name191
+12:42:23 Started test name135.name192
+12:42:23 Started test name135.name193
+12:42:23 Started test name135.name194
+12:42:23 Started test name135.name195
+12:42:23 Started test name135.name196
+12:42:23 Started test name135.name197
+12:42:23 Started test name135.name198
+12:42:23 Started test name135.name199
+12:42:23 Started test name135.name200
+12:42:23 Started test name135.name201
+12:42:23 Started test name135.name202
+12:42:23 Started test name135.name203
+12:42:23 Started test name135.name204
+12:42:23 Started test name135.name205
+12:42:23 Started test name135.name206
+12:42:23 Started test name135.name207
+12:42:23 Started test name135.name208
+12:42:23 Started test name135.name209
+12:42:23 Started test name135.name210
+12:42:23 Started test name135.name211
+12:42:23 Started test name135.name212
+12:42:23 Started test name135.name213
+12:42:23 Started test name135.name214
+12:42:23 Started test name135.name215
+12:42:23 Started test name135.name216
+12:42:23 Started test name135.name217
+12:42:23 Started test name135.name218
+12:42:23 Started test name135.name219
+12:42:23 Started test name135.name220
+12:42:23 Started test name135.name221
+12:42:23 Started test name135.name222
+12:42:23 Started test name135.name223
+12:42:23 Started test name135.name224
+12:42:23 Started test name135.name225
+12:42:23 Started test name135.name226
+12:42:23 Started test name135.name227
+12:42:23 Started test name135.name228
+12:42:23 Started test name135.name229
+12:42:23 Started test name135.name230
+12:42:23 Started test name135.name231
+12:42:23 Started test name135.name232
+12:42:23 Started test name135.name233
+12:42:23 Started test name135.name234
+12:42:23 Started test name135.name235
+12:42:23 Started test name135.name236
+12:42:23 Started test name135.name237
+12:42:23 Started test name135.name238
+12:42:23 Started test name135.name239
+12:42:23 Started test name135.name240
+12:42:23 Started test name135.name241
+12:42:23 Started test name135.name242
+12:42:23 Started test name135.name243
+12:42:23 Started test name135.name244
+12:42:23 Started test name135.name245
+12:42:23 Started test name135.name246
+12:42:23 Started test name135.name247
+12:42:23 Started test name135.name248
+12:42:23 Started test name135.name249
+12:42:23 Started test name135.name250
+12:42:23 Started test name135.name251
+12:42:23 Started test name135.name252
+12:42:23 Started test name135.name253
+12:42:23 Started test name135.name254
+12:42:23 Started test name135.name255
+12:42:23 Started test name135.name256
+12:42:23 Started test name135.name257
+12:42:23 Started test name135.name258
+12:42:23 Started test name135.name259
+12:42:23 Started test name135.name260
+12:42:23 Started test name135.name261
+12:42:23 Started test name135.name262
+12:42:23 Started test name135.name263
+12:42:23 Started test name135.name264
+12:42:23 Started test name135.name265
+12:42:23 Started test name135.name266
+12:42:23 Started test name135.name267
+12:42:23 Started test name135.name268
+12:42:23 Started test name135.name269
+12:42:23 Started test name135.name270
+12:42:23 Started test name135.name271
+12:42:23 Started test name135.name272
+12:42:23 Started test name135.name273
+12:42:23 Started test name135.name274
+12:42:23 Started test name135.name275
+12:42:23 Started test name135.name276
+12:42:23 Started test name135.name277
+12:42:23 Started test name135.name278
+12:42:23 Started test name135.name279
+12:42:23 Started test name135.name280
+12:42:23 Started test name135.name281
+12:42:23 Started test name135.name282
+12:42:23 Started test name135.name283
+12:42:23 Started test name135.name284
+12:42:23 Started test name135.name285
+12:42:23 Started test name135.name286
+12:42:23 Started test name135.name287
+12:42:23 Started test name135.name288
+12:42:23 Started test name135.name289
+12:42:23 Started test name135.name290
+12:42:23 Started test name135.name291
+12:42:23 Started test name135.name292
+12:42:23 Started test name135.name293
+12:42:23 Started test name135.name294
+12:42:23 Started test name135.name295
+12:42:23 Started test name135.name296
+12:42:23 Started test name135.name297
+12:42:23 Started test name135.name298
+12:42:23 Started test name135.name299
+12:42:23 Started test name135.name300
+12:42:23 Started test name135.name301
+12:42:23 Started test name135.name302
+12:42:23 Started test name135.name303
+12:42:23 Started test name135.name304
+12:42:23 Started test name135.name305
+12:42:23 Started test name135.name306
+12:42:23 Started test name135.name307
+12:42:23 Started test name135.name308
+12:42:23 Started test name135.name309
+12:42:23 Started test name135.name310
+12:42:23 Started test name135.name311
+12:42:23 Started test name135.name312
+12:42:23 Started test name135.name313
+12:42:23 Started test name135.name314
+12:42:23 Started test name135.name315
+12:42:23 Started test name135.name316
+12:42:23 Started test name135.name317
+12:42:23 Started test name135.name318
+12:42:23 Started test name135.name319
+12:42:23 Started test name135.name320
+12:42:23 Started test name135.name321
+12:42:23 Started test name135.name322
+12:42:23 Started test name135.name323
+12:42:23 Started test name135.name324
+12:42:23 Started test name135.name325
+12:42:23 Started test name135.name326
+12:42:23 Started test name135.name327
+12:42:23 Started test name135.name328
+12:42:23 Started test name135.name329
+12:42:23 Started test name135.name330
+12:42:23 Started test name135.name331
+12:42:23 Started test name135.name332
+12:42:23 Started test name135.name333
+12:42:23 Started test name135.name334
+12:42:23 Started test name135.name335
+12:42:23 Started test name135.name336
+12:42:23 Started test name135.name337
+12:42:23 Started test name135.name338
+12:42:23 Started test name135.name339
+12:42:23 Started test name135.name340
+12:42:23 Started test name135.name341
+12:42:23 Started test name135.name342
+12:42:23 Started test name135.name343
+12:42:23 Started test name135.name344
+12:42:23 Started test name135.name345
+12:42:23 Started test name135.name346
+12:42:23 Started test name135.name347
+12:42:23 Started test name135.name348
+12:42:23 Started test name135.name349
+12:42:23 Started test name135.name350
+12:42:23 Started test name135.name351
+12:42:23 Started test name135.name352
+12:42:23 Started test name135.name353
+12:42:23 Started test name135.name354
+12:42:23 Started test name135.name355
+12:42:23 Started test name135.name356
+12:42:23 Started test name135.name357
+12:42:23 Started test name135.name358
+12:42:23 Started test name135.name359
+12:42:23 Started test name135.name360
+12:42:23 Started test name135.name361
+12:42:23 Started test name135.name362
+12:42:23 Started test name135.name363
+12:42:23 Started test name135.name364
+12:42:23 Started test name135.name365
+12:42:23 Started test name135.name366
+12:42:23 Started test name135.name367
+12:42:23 Started test name135.name368
+12:42:23 Started test name135.name369
+12:42:23 Started test name135.name370
+12:42:23 Started test name135.name371
+12:42:23 Started test name135.name372
+12:42:23 Started test name135.name373
+12:42:23 Started test name135.name374
+12:42:23 Started test name135.name375
+12:42:23 Started test name135.name376
+12:42:23 Started test name135.name377
+12:42:23 Started test name135.name378
+12:42:23 Started test name135.name379
+12:42:23 Started test name135.name380
+12:42:23 Started test name135.name381
+12:42:23 Started test name135.name382
+12:42:23 Started test name135.name383
+12:42:23 Started test name135.name384
+12:42:23 Started test name135.name385
+12:42:23 Started test name135.name386
+12:42:23 Started test name135.name387
+12:42:23 Started test name135.name388
+12:42:23 Started test name135.name389
+12:42:23 Started test name135.name390
+12:42:23 Started test name135.name391
+12:42:23 Started test name135.name392
+12:42:23 Started test name135.name393
+12:42:23 Started test name135.name394
+12:42:23 Started test name135.name395
+12:42:23 Started test name135.name396
+12:42:23 Started test name135.name397
+12:42:23 Started test name135.name398
+12:42:23 Started test name135.name399
+12:42:23 Started test name135.name400
+12:42:23 Started test name135.name401
+12:42:23 Started test name135.name402
+12:42:23 Started test name135.name403
+12:42:23 Started test name135.name404
+12:42:23 Started test name135.name405
+12:42:23 Started test name135.name406
+12:42:23 Started test name135.name407
+12:42:23 Started test name135.name408
+12:42:23 Started test name135.name409
+12:42:23 Started test name135.name410
+12:42:23 Started test name135.name411
+12:42:23 Started test name135.name412
+12:42:23 Started test name135.name413
+12:42:23 Started test name135.name414
+12:42:23 Started test name135.name415
+12:42:23 Started test name135.name416
+12:42:23 Started test name135.name417
+12:42:23 Started test name135.name418
+12:42:23 Started test name135.name419
+12:42:23 Started test name135.name420
+12:42:23 Started test name135.name421
+12:42:23 Started test name135.name422
+12:42:23 Started test name135.name423
+12:42:23 Started test name135.name424
+12:42:23 Started test name135.name425
+12:42:23 Started test name135.name426
+12:42:23 Started test name135.name427
+12:42:23 Started test name135.name428
+12:42:23 Started test name135.name429
+12:42:23 Started test name135.name430
+12:42:23 Started test name135.name431
+12:42:23 Started test name135.name432
+12:42:23 Started test name135.name433
+12:42:23 Started test name135.name434
+12:42:23 Started test name135.name435
+12:42:23 Started test name135.name436
+12:42:23 Started test name135.name437
+12:42:23 Started test name135.name438
+12:42:23 Started test name135.name439
+12:42:23 Started test name135.name440
+12:42:23 Started test name135.name441
+12:42:23 Started test name135.name442
+12:42:23 Started test name135.name443
+12:42:23 Started test name135.name444
+12:42:23 Started test name135.name445
+12:42:23 Started test name135.name446
+12:42:23 Started test name135.name447
+12:42:23 Started test name135.name448
+12:42:23 Started test name135.name449
+12:42:23 Started test name135.name450
+12:42:23 Started test name135.name451
+12:42:23 Started test name135.name452
+12:42:23 Started test name135.name453
+12:42:23 Started test name135.name454
+12:42:23 Started test name135.name455
+12:42:23 Started test name135.name456
+12:42:23 Started test name135.name457
+12:42:23 Started test name135.name458
+12:42:23 Started test name135.name459
+12:42:23 Started test name135.name460
+12:42:23 Started test name135.name461
+12:42:23 Started test name135.name462
+12:42:23 Started test name135.name463
+12:42:23 Started test name135.name464
+12:42:23 Started test name135.name465
+12:42:23 Started test name135.name466
+12:42:23 Started test name135.name467
+12:42:23 Started test name135.name468
+12:42:23 Started test name135.name469
+12:42:23 Started test name135.name470
+12:42:23 Started test name135.name471
+12:42:23 Started test name135.name472
+12:42:23 Started test name135.name473
+12:42:23 Started test name135.name474
+12:42:23 Started test name135.name475
+12:42:23 Started test name135.name476
+12:42:23 Started test name135.name477
+12:42:23 Started test name135.name478
+12:42:23 Started test name135.name479
+12:42:23 Started test name135.name480
+12:42:23 Started test name135.name481
+12:42:23 Started test name135.name482
+12:42:23 Started test name135.name483
+12:42:23 Started test name135.name484
+12:42:23 Started test name135.name485
+12:42:23 Started test name135.name486
+12:42:23 Started test name135.name487
+12:42:23 Started test name135.name488
+12:42:23 Started test name135.name489
+12:42:23 Started test name135.name490
+12:42:23 Started test name135.name491
+12:42:23 Started test name135.name492
+12:42:23 Started test name135.name493
+12:42:23 Started test name135.name494
+12:42:23 Started test name135.name495
+12:42:23 Started test name135.name496
+12:42:23 Started test name135.name497
+12:42:23 Started test name135.name498
+12:42:23 Started test name135.name499
+12:42:23 Started test name135.name500
+12:42:23 Started test name135.name501
+12:42:23 Started test name135.name502
+12:42:23 Started test name135.name503
+12:42:23 Started test name135.name504
+12:42:23 Started test name135.name505
+12:42:23 Started test name135.name506
+12:42:23 Started test name135.name507
+12:42:23 Started test name135.name508
+12:42:23 Started test name135.name509
+12:42:23 Started test name135.name510
+12:42:23 Started test name135.name511
+12:42:23 Started test name135.name512
+12:42:23 Started test name135.name513
+12:42:23 Started test name135.name514
+12:42:23 Started test name135.name515
+12:42:23 Started test name135.name516
+12:42:23 Started test name135.name517
+12:42:23 Started model name004.name046
+12:42:23 Started model name010.name087
+12:42:23 Started model name004.name041
+12:42:23 Started model name070.name074
+12:42:23 Started model name070.name072
+12:42:23 Started unit test name518.name519
+12:42:23 Started unit test name518.name520
+12:42:23 Started unit test name518.name521
+12:42:25     Passed test  name217 [82 of 438 in 1.87s]
+12:42:25     Passed test  name213 [78 of 438 in 1.94s]
+12:42:25     Passed test  name241 [106 of 438 in 2.03s]
+12:42:25     Passed test  name240 [105 of 438 in 2.09s]
+12:42:25     Passed test  name239 [104 of 438 in 2.11s]
+12:42:25     Passed test  name218 [83 of 438 in 2.12s]
+12:42:25     Passed test  name242 [107 of 438 in 2.15s]
+12:42:25     Passed test  name243 [108 of 438 in 2.34s]
+12:42:25     Passed test  name245 [110 of 438 in 2.73s]
+12:42:26     Passed test  name219 [84 of 438 in 3.29s]
+12:42:27     Passed test  name278 [143 of 438 in 3.81s]
+12:42:27     Passed test  name277 [142 of 438 in 3.82s]
+12:42:27     Passed test  name279 [144 of 438 in 3.90s]
+12:42:27     Passed test  name273 [138 of 438 in 3.90s]
+12:42:27     Passed test  name231 [96 of 438 in 3.96s]
+12:42:27     Passed test  name212 [77 of 438 in 4.10s]
+12:42:27     Passed test  name216 [81 of 438 in 4.28s]
+12:42:27     Passed test  name232 [97 of 438 in 4.38s]
+12:42:27     Passed test  name316 [181 of 438 in 4.54s]
+12:42:28     Passed test  name143 [8 of 438 in 5.16s]
+12:42:28     Passed test  name285 [150 of 438 in 5.24s]
+12:42:28     Passed test  name286 [151 of 438 in 5.40s]
+12:42:28     Passed test  name284 [149 of 438 in 5.44s]
+12:42:28     Failed test  name323 (models/name120/name125/name522.yml:44:13) [188 of 438 in 5.58s]
+12:42:29     Passed test  name225 [90 of 438 in 5.86s]
+12:42:29     Passed test  name215 [80 of 438 in 5.88s]
+12:42:29     Passed test  name257 [122 of 438 in 5.99s]
+12:42:29     Passed test  name320 [185 of 438 in 6.04s]
+12:42:29     Passed test  name288 [153 of 438 in 6.13s]
+12:42:29     Passed test  name233 [98 of 438 in 6.39s]
+12:42:29     Passed test  name319 [184 of 438 in 6.47s]
+12:42:30     Passed test  name340 [205 of 438 in 6.79s]
+12:42:30     Passed test  name339 [204 of 438 in 6.83s]
+12:42:30     Passed test  name321 [186 of 438 in 6.84s]
+12:42:30     Warned test  name220 (models/name124/name125/name523.yml:52:13) [85 of 438 in 7.64s]
+12:42:31     Passed test  name229 [94 of 438 in 7.82s]
+12:42:31     Passed test  name272 [137 of 438 in 7.81s]
+12:42:31     Passed test  name221 [86 of 438 in 7.82s]
+12:42:31     Passed test  name154 [19 of 438 in 8.21s]
+12:42:31     Warned test  name214 (models/name124/name125/name523.yml:52:13) [79 of 438 in 8.34s]
+12:42:31     Passed test  name290 [155 of 438 in 8.45s]
+12:42:32     Passed test  name181 [46 of 438 in 8.82s]
+12:42:32     Passed test  name255 [120 of 438 in 8.91s]
+12:42:32     Passed test  name292 [157 of 438 in 9.07s]
+12:42:32     Passed test  name335 [200 of 438 in 9.51s]
+12:42:32     Passed test  name226 [91 of 438 in 9.62s]
+12:42:32     Passed test  name149 [14 of 438 in 9.64s]
+12:42:33     Passed test  name139 [4 of 438 in 9.91s]
+12:42:33     Passed test  name184 [49 of 438 in 10.16s]
+12:42:34     Passed test  name259 [124 of 438 in 10.98s]
+12:42:34     Passed test  name455 [320 of 438 in 11.12s]
+12:42:34     Passed test  name294 [159 of 438 in 11.24s]
+12:42:36     Passed test  name246 [111 of 438 in 12.96s]
+12:42:37     Passed test  name227 [92 of 438 in 14.11s]
+12:42:37     Passed test  name222 [87 of 438 in 14.61s]
+12:42:38     Passed test  name281 [146 of 438 in 14.87s]
+12:42:38     Passed test  name280 [145 of 438 in 15.14s]
+12:42:38     Passed test  name282 [147 of 438 in 15.21s]
+12:42:38     Failed test  name324 (models/name120/name125/name522.yml:33:13) [189 of 438 in 15.25s]
+12:42:38     Passed test  name328 [193 of 438 in 15.25s]
+12:42:38     Passed test  name337 [202 of 438 in 15.46s]
+12:42:38     Passed test  name334 [199 of 438 in 15.54s]
+12:42:38     Passed test  name256 [121 of 438 in 15.56s]
+12:42:38     Passed test  name346 [211 of 438 in 15.61s]
+12:42:39     Failed test  name325 (models/name120/name125/name522.yml:27:13) [190 of 438 in 15.95s]
+12:42:39     Passed test  name297 [162 of 438 in 15.96s]
+12:42:39     Passed test  name269 [134 of 438 in 16.02s]
+12:42:39     Passed test  name283 [148 of 438 in 16.14s]
+12:42:39     Passed test  name224 [89 of 438 in 16.31s]
+12:42:39     Passed test  name289 [154 of 438 in 16.42s]
+12:42:39     Passed test  name287 [152 of 438 in 16.72s]
+12:42:40     Passed test  name460 [325 of 438 in 16.88s]
+12:42:40     Passed test  name348 [213 of 438 in 17.25s]
+12:42:40     Passed test  name261 [126 of 438 in 17.48s]
+12:42:40     Passed test  name291 [156 of 438 in 17.52s]
+12:42:40     Passed test  name182 [47 of 438 in 17.61s]
+12:42:41     Passed test  name462 [327 of 438 in 17.79s]
+12:42:41     Passed test  name464 [329 of 438 in 17.85s]
+12:42:41     Passed test  name341 [206 of 438 in 17.94s]
+12:42:41     Passed test  name180 [45 of 438 in 18.25s]
+12:42:41     Passed test  name301 [166 of 438 in 18.47s]
+12:42:41     Passed test  name206 [71 of 438 in 18.66s]
+12:42:41     Passed test  name466 [331 of 438 in 18.67s]
+12:42:41     Passed test  name342 [207 of 438 in 18.70s]
+12:42:42     Passed test  name353 [218 of 438 in 18.78s]
+12:42:42     Passed test  name343 [208 of 438 in 18.89s]
+12:42:42     Passed test  name303 [168 of 438 in 19.13s]
+12:42:42     Passed test  name344 [209 of 438 in 19.60s]
+12:42:43     Passed test  name461 [326 of 438 in 19.76s]
+12:42:43     Passed test  name431 [296 of 438 in 19.86s]
+12:42:43     Passed test  name354 [219 of 438 in 19.94s]
+12:42:43     Passed test  name355 [220 of 438 in 20.13s]
+12:42:43     Passed test  name274 [139 of 438 in 20.15s]
+12:42:43     Passed test  name302 [167 of 438 in 20.46s]
+12:42:43     Passed test  name306 [171 of 438 in 20.67s]
+12:42:43     Passed test  name299 [164 of 438 in 20.70s]
+12:42:44     Passed test  name304 [169 of 438 in 20.97s]
+12:42:44     Passed test  name275 [140 of 438 in 21.14s]
+12:42:44     Passed test  name183 [48 of 438 in 21.17s]
+12:42:44     Passed test  name234 [99 of 438 in 21.30s]
+12:42:44     Passed test  name300 [165 of 438 in 21.30s]
+12:42:44     Passed test  name459 [324 of 438 in 21.29s]
+12:42:44     Passed test  name230 [95 of 438 in 21.33s]
+12:42:44     Passed test  name327 [192 of 438 in 21.34s]
+12:42:44     Passed test  name268 [133 of 438 in 21.37s]
+12:42:44     Passed test  name456 [321 of 438 in 21.34s]
+12:42:44     Passed test  name318 [183 of 438 in 21.39s]
+12:42:44     Passed test  name203 [68 of 438 in 21.70s]
+12:42:44     Passed test  name356 [221 of 438 in 21.68s]
+12:42:44     Passed test  name449 [314 of 438 in 21.70s]
+12:42:45     Passed test  name432 [297 of 438 in 21.78s]
+12:42:45     Passed test  name452 [317 of 438 in 21.81s]
+12:42:45     Passed test  name350 [215 of 438 in 21.86s]
+12:42:45     Passed test  name202 [67 of 438 in 22.76s]
+12:42:46     Passed test  name352 [217 of 438 in 22.78s]
+12:42:46     Passed test  name358 [223 of 438 in 22.78s]
+12:42:46     Passed test  name357 [222 of 438 in 22.82s]
+12:42:46     Passed test  name205 [70 of 438 in 22.91s]
+12:42:46     Passed test  name305 [170 of 438 in 22.93s]
+12:42:46     Passed test  name309 [174 of 438 in 23.03s]
+12:42:46     Passed test  name359 [224 of 438 in 23.04s]
+12:42:46     Passed test  name265 [130 of 438 in 23.13s]
+12:42:46     Passed test  name264 [129 of 438 in 23.36s]
+12:42:46     Passed test  name308 [173 of 438 in 23.48s]
+12:42:46     Passed test  name469 [334 of 438 in 23.51s]
+12:42:46     Passed test  name448 [313 of 438 in 23.52s]
+12:42:46     Passed test  name266 [131 of 438 in 23.57s]
+12:42:47     Passed test  name317 [182 of 438 in 23.82s]
+12:42:47     Passed test  name270 [135 of 438 in 23.85s]
+12:42:47     Passed test  name254 [119 of 438 in 23.85s]
+12:42:47     Passed test  name336 [201 of 438 in 23.84s]
+12:42:47     Passed test  name295 [160 of 438 in 23.85s]
+12:42:47     Passed test  name235 [100 of 438 in 23.86s]
+12:42:47     Passed test  name228 [93 of 438 in 23.86s]
+12:42:47     Passed test  name223 [88 of 438 in 23.86s]
+12:42:47     Passed test  name260 [125 of 438 in 23.89s]
+12:42:47     Passed test  name151 [16 of 438 in 23.93s]
+12:42:47     Passed test  name298 [163 of 438 in 24.03s]
+12:42:47     Warned test  name262 (models/name124/name125/name523.yml:52:13) [127 of 438 in 24.33s]
+12:42:47     Passed test  name155 [20 of 438 in 24.48s]
+12:42:47     Passed test  name331 [196 of 438 in 24.51s]
+12:42:47     Passed test  name433 [298 of 438 in 24.50s]
+12:42:47     Passed test  name333 [198 of 438 in 24.54s]
+12:42:47     Passed test  name142 [7 of 438 in 24.68s]
+12:42:48     Passed test  name247 [112 of 438 in 24.93s]
+12:42:48     Passed test  name311 [176 of 438 in 24.96s]
+12:42:48     Passed test  name137 [2 of 438 in 25.32s]
+12:42:48     Passed test  name307 [172 of 438 in 25.34s]
+12:42:48     Passed test  name248 [113 of 438 in 25.37s]
+12:42:48     Passed test  name249 [114 of 438 in 25.41s]
+12:42:48     Passed test  name252 [117 of 438 in 25.55s]
+12:42:48     Passed test  name141 [6 of 438 in 25.71s]
+12:42:48     Passed test  name296 [161 of 438 in 25.73s]
+12:42:48     Passed test  name145 [10 of 438 in 25.78s]
+12:42:49     Passed test  name136 [1 of 438 in 25.80s]
+12:42:49     Passed test  name293 [158 of 438 in 25.85s]
+12:42:49     Passed test  name148 [13 of 438 in 26.21s]
+12:42:49     Passed test  name349 [214 of 438 in 26.25s]
+12:42:49     Passed test  name345 [210 of 438 in 26.27s]
+12:42:49     Passed test  name315 [180 of 438 in 26.48s]
+12:42:49     Passed test  name253 [118 of 438 in 26.56s]
+12:42:49     Passed test  name362 [227 of 438 in 26.55s]
+12:42:49     Passed test  name312 [177 of 438 in 26.58s]
+12:42:49     Passed test  name251 [116 of 438 in 26.59s]
+12:42:49     Passed test  name209 [74 of 438 in 26.67s]
+12:42:49     Passed test  name314 [179 of 438 in 26.68s]
+12:42:49     Passed test  name152 [17 of 438 in 26.74s]
+12:42:49     Passed test  name250 [115 of 438 in 26.73s]
+12:42:50     Passed test  name338 [203 of 438 in 26.77s]
+12:42:50     Passed test  name276 [141 of 438 in 26.82s]
+12:42:50     Failed test  name326 (models/name120/name125/name522.yml:40:13) [191 of 438 in 26.86s]
+12:42:50     Passed test  name211 [76 of 438 in 26.99s]
+12:42:50     Passed test  name434 [299 of 438 in 27.02s]
+12:42:50     Passed test  name237 [102 of 438 in 27.05s]
+12:42:50     Passed test  name471 [336 of 438 in 27.44s]
+12:42:50     Passed test  name144 [9 of 438 in 27.54s]
+12:42:50     Passed test  name363 [228 of 438 in 27.53s]
+12:42:50     Passed test  name364 [229 of 438 in 27.62s]
+12:42:50     Passed test  name236 [101 of 438 in 27.70s]
+12:42:50     Passed test  name267 [132 of 438 in 27.70s]
+12:42:51     Passed test  name347 [212 of 438 in 27.80s]
+12:42:51     Passed test  name138 [3 of 438 in 27.83s]
+12:42:51     Passed test  name238 [103 of 438 in 27.84s]
+12:42:51     Warned test  name244 (models/name124/name125/name523.yml:52:13) [109 of 438 in 27.84s]
+12:42:51     Passed test  name210 [75 of 438 in 27.93s]
+12:42:51     Passed test  name365 [230 of 438 in 27.93s]
+12:42:51     Passed test  name201 [66 of 438 in 27.97s]
+12:42:51     Passed test  name367 [232 of 438 in 27.98s]
+12:42:51     Passed test  name369 [234 of 438 in 28.09s]
+12:42:51     Passed test  name330 [195 of 438 in 28.16s]
+12:42:51     Passed test  name322 [187 of 438 in 28.30s]
+12:42:51     Passed test  name366 [231 of 438 in 28.31s]
+12:42:51     Passed test  name465 [330 of 438 in 28.42s]
+12:42:51     Passed test  name271 [136 of 438 in 28.45s]
+12:42:51     Passed test  name351 [216 of 438 in 28.50s]
+12:42:51     Passed test  name368 [233 of 438 in 28.73s]
+12:42:52     Passed test  name263 [128 of 438 in 29.03s]
+12:42:52     Passed test  name258 [123 of 438 in 29.06s]
+12:42:52     Passed test  name140 [5 of 438 in 29.15s]
+12:42:52     Passed test  name458 [323 of 438 in 29.13s]
+12:42:52     Passed test  name457 [322 of 438 in 29.14s]
+12:42:52     Passed test  name463 [328 of 438 in 29.26s]
+12:42:52     Passed test  name370 [235 of 438 in 29.36s]
+12:42:52     Passed test  name204 [69 of 438 in 29.51s]
+12:42:52     Passed test  name467 [332 of 438 in 29.50s]
+12:42:52     Passed test  name207 [72 of 438 in 29.56s]
+12:42:52     Passed test  name373 [238 of 438 in 29.57s]
+12:42:52     Passed test  name371 [236 of 438 in 29.61s]
+12:42:52     Passed test  name376 [241 of 438 in 29.71s]
+12:42:52     Passed test  name472 [337 of 438 in 29.72s]
+12:42:53     Passed test  name508 [373 of 438 in 29.78s]
+12:42:53     Passed test  name375 [240 of 438 in 29.82s]
+12:42:53     Passed test  name374 [239 of 438 in 29.84s]
+12:42:53     Passed test  name310 [175 of 438 in 29.96s]
+12:42:53     Passed test  name504 [369 of 438 in 29.95s]
+12:42:53     Passed test  name451 [316 of 438 in 29.99s]
+12:42:53     Passed test  name393 [258 of 438 in 30.08s]
+12:42:53     Passed test  name377 [242 of 438 in 30.11s]
+12:42:53     Passed test  name474 [339 of 438 in 30.16s]
+12:42:53     Passed test  name488 [353 of 438 in 30.22s]
+12:42:53     Passed test  name450 [315 of 438 in 30.31s]
+12:42:53     Passed test  name372 [237 of 438 in 30.34s]
+12:42:53     Passed test  name329 [194 of 438 in 30.36s]
+12:42:53     Passed test  name313 [178 of 438 in 30.53s]
+12:42:53     Passed test  name146 [11 of 438 in 30.76s]
+12:42:54     Passed test  name502 [367 of 438 in 30.76s]
+12:42:54     Passed test  name492 [357 of 438 in 30.80s]
+12:42:54     Passed test  name470 [335 of 438 in 30.85s]
+12:42:54     Passed test  name499 [364 of 438 in 30.85s]
+12:42:54    Skipped model name004.name041 (ephemeral)
+12:42:54 Started model name004.name051
+12:42:54     Failed test  name147 (models/name120/name125/name522.yml:19:13) [12 of 438 in 30.91s]
+12:42:54     Passed test  name491 [356 of 438 in 31.20s]
+12:42:54     Passed test  name500 [365 of 438 in 31.27s]
+12:42:54     Passed test  name494 [359 of 438 in 31.38s]
+12:42:54     Passed test  name505 [370 of 438 in 31.39s]
+12:42:54     Passed test  name489 [354 of 438 in 31.42s]
+12:42:54     Passed test  name156 [21 of 438 in 31.47s]
+12:42:54    Skipped model name070.name072 (ephemeral)
+12:42:54 Started test name135.name524
+12:42:54 Started test name135.name525
+12:42:54 Started test name135.name526
+12:42:54 Started test name135.name527
+12:42:54 Started test name135.name528
+12:42:54 Started test name135.name529
+12:42:54 Started test name135.name530
+12:42:54 Started test name135.name531
+12:42:54 Started test name135.name532
+12:42:54     Passed test  name507 [372 of 438 in 31.45s]
+12:42:54    Skipped model name004.name046 (ephemeral)
+12:42:54 Started model name004.name052
+12:42:54     Passed test  name157 [22 of 438 in 31.62s]
+12:42:54     Warned test  name486 (models/name124/name125/name523.yml:58:13) [351 of 438 in 31.63s]
+12:42:55     Passed test  name490 [355 of 438 in 31.83s]
+12:42:55     Passed test  name503 [368 of 438 in 31.85s]
+12:42:55    Skipped model name070.name074 (ephemeral)
+12:42:55 Started model name070.name075
+12:42:55     Passed test  name150 [15 of 438 in 31.94s]
+12:42:55     Passed test  name484 [349 of 438 in 31.91s]
+12:42:55     Passed test  name497 [362 of 438 in 31.98s]
+12:42:55     Passed test  name468 [333 of 438 in 32.04s]
+12:42:55     Passed test  name475 [340 of 438 in 32.18s]
+12:42:55     Passed test  name480 [345 of 438 in 32.20s]
+12:42:55     Passed test  name361 [226 of 438 in 32.41s]
+12:42:55     Passed test  name447 [312 of 438 in 32.46s]
+12:42:55     Passed test  name498 [363 of 438 in 32.61s]
+12:42:55     Passed test  name159 [24 of 438 in 32.76s]
+12:42:56     Passed test  name153 [18 of 438 in 32.81s]
+12:42:56     Passed test  name495 [360 of 438 in 32.81s]
+12:42:56     Passed test  name453 [318 of 438 in 32.84s]
+12:42:56     Failed test  name172 (tests/name125/name172.name126) [37 of 438 in 32.99s]
+12:42:56     Passed test  name360 [225 of 438 in 33.33s]
+12:42:56     Passed test  name476 [341 of 438 in 33.39s]
+12:42:56     Passed test  name487 [352 of 438 in 33.45s]
+12:42:56     Passed test  name454 [319 of 438 in 33.51s]
+12:42:56     Passed test  name396 [261 of 438 in 33.58s]
+12:42:56     Passed test  name501 [366 of 438 in 33.61s]
+12:42:56     Passed test  name493 [358 of 438 in 33.61s]
+12:42:56    Skipped model name004.name051 (ephemeral)
+12:42:56 Started test name135.name533
+12:42:56 Started test name135.name534
+12:42:56 Started test name135.name535
+12:42:56 Started test name135.name536
+12:42:56 Started test name135.name537
+12:42:56 Started test name135.name538
+12:42:56 Started test name135.name539
+12:42:56 Started test name135.name540
+12:42:56 Started test name135.name541
+12:42:56 Started test name135.name542
+12:42:56 Started test name135.name543
+12:42:56 Started test name135.name544
+12:42:56 Started test name135.name545
+12:42:56 Started test name135.name546
+12:42:56 Started test name135.name547
+12:42:56 Started test name135.name548
+12:42:56 Started test name135.name549
+12:42:56 Started test name135.name550
+12:42:56 Started test name135.name551
+12:42:56 Started test name135.name552
+12:42:56 Started test name135.name553
+12:42:56 Started test name135.name554
+12:42:56 Started test name135.name555
+12:42:56 Started test name135.name556
+12:42:56 Started test name135.name557
+12:42:56 Started test name135.name558
+12:42:56 Started test name135.name559
+12:42:56 Started test name135.name560
+12:42:56 Started test name135.name561
+12:42:56 Started test name135.name562
+12:42:56 Started test name135.name563
+12:42:56     Passed test  name511 [376 of 438 in 33.61s]
+12:42:57     Passed test  name482 [347 of 438 in 33.83s]
+12:42:57     Passed test  name510 [375 of 438 in 33.89s]
+12:42:57     Passed test  name473 [338 of 438 in 33.96s]
+12:42:57     Failed test  name173 (tests/name125/name173.name126) [38 of 438 in 34.04s]
+12:42:57     Passed test  name506 [371 of 438 in 34.01s]
+12:42:57     Passed test  name478 [343 of 438 in 34.18s]
+12:42:57     Passed test  name394 [259 of 438 in 34.24s]
+12:42:57    Skipped model name010.name087 (ephemeral)
+12:42:57 Started test name135.name564
+12:42:57 Started test name135.name565
+12:42:57     Passed test  name170 [35 of 438 in 34.31s]
+12:42:57     Passed test  name166 [31 of 438 in 34.31s]
+12:42:57     Passed test  name397 [262 of 438 in 34.28s]
+12:42:57     Passed test  name402 [267 of 438 in 34.31s]
+12:42:57     Passed test  name446 [311 of 438 in 34.38s]
+12:42:57     Passed test  name512 [377 of 438 in 34.37s]
+12:42:57     Passed test  name400 [265 of 438 in 34.73s]
+12:42:58     Passed test  name399 [264 of 438 in 34.93s]
+12:42:58     Passed test  name398 [263 of 438 in 34.95s]
+12:42:58     Passed test  name163 [28 of 438 in 35.01s]
+12:42:58     Passed test  name435 [300 of 438 in 35.05s]
+12:42:58     Passed test  name208 [73 of 438 in 35.12s]
+12:42:58     Passed test  name483 [348 of 438 in 35.10s]
+12:42:58     Passed test  name401 [266 of 438 in 35.17s]
+12:42:58     Passed test  name174 [39 of 438 in 35.26s]
+12:42:58     Passed test  name438 [303 of 438 in 35.29s]
+12:42:58     Passed test  name436 [301 of 438 in 35.31s]
+12:42:58     Passed test  name162 [27 of 438 in 35.39s]
+12:42:58     Passed test  name509 [374 of 438 in 35.48s]
+12:42:58     Passed test  name526 [388 of 438 in 4.16s]
+12:42:58     Passed test  name496 [361 of 438 in 35.72s]
+12:42:59     Passed test  name531 [393 of 438 in 4.51s]
+12:42:59     Passed test  name529 [391 of 438 in 4.51s]
+12:42:59     Passed test  name524 [386 of 438 in 4.63s]
+12:42:59     Passed test  name412 [277 of 438 in 36.08s]
+12:42:59     Passed test  name404 [269 of 438 in 36.18s]
+12:42:59     Passed test  name419 [284 of 438 in 36.25s]
+12:42:59     Passed test  name158 [23 of 438 in 36.37s]
+12:42:59     Passed test  name421 [286 of 438 in 36.56s]
+12:42:59     Passed test  name481 [346 of 438 in 36.63s]
+12:42:59     Passed test  name525 [387 of 438 in 5.28s]
+12:43:00     Passed test  name185 [50 of 438 in 37.00s]
+12:43:00     Passed test  name417 [282 of 438 in 37.01s]
+12:43:00     Passed test  name479 [344 of 438 in 37.00s]
+12:43:00     Passed test  name415 [280 of 438 in 37.17s]
+12:43:00     Passed test  name425 [290 of 438 in 37.44s]
+12:43:00     Passed test  name189 [54 of 438 in 37.52s]
+12:43:00     Passed test  name429 [294 of 438 in 37.53s]
+12:43:00     Passed test  name395 [260 of 438 in 37.72s]
+12:43:00     Passed test  name477 [342 of 438 in 37.73s]
+12:43:00     Passed test  name532 [394 of 438 in 6.30s]
+12:43:01     Passed test  name437 [302 of 438 in 37.76s]
+12:43:01     Passed test  name192 [57 of 438 in 37.82s]
+12:43:01     Passed test  name528 [390 of 438 in 6.37s]
+12:43:01     Passed test  name403 [268 of 438 in 37.88s]
+12:43:01     Passed test  name186 [51 of 438 in 37.97s]
+12:43:01     Passed test  name430 [295 of 438 in 38.10s]
+12:43:01     Passed test  name416 [281 of 438 in 38.40s]
+12:43:01     Passed test  name445 [310 of 438 in 38.56s]
+12:43:01     Passed test  name409 [274 of 438 in 38.57s]
+12:43:01     Passed test  name188 [53 of 438 in 38.61s]
+12:43:01     Passed test  name168 [33 of 438 in 38.63s]
+12:43:01     Passed test  name169 [34 of 438 in 38.64s]
+12:43:02     Passed test  name408 [273 of 438 in 38.86s]
+12:43:02     Passed test  name171 [36 of 438 in 38.93s]
+12:43:02     Passed test  name176 [41 of 438 in 39.01s]
+12:43:02     Passed test  name413 [278 of 438 in 39.21s]
+12:43:02    Skipped model name004.name052 (ephemeral)
+12:43:02 Started test name135.name566
+12:43:02 Started test name135.name567
+12:43:02 Started test name135.name568
+12:43:02 Started test name135.name569
+12:43:02     Passed test  name530 [392 of 438 in 7.86s]
+12:43:02     Passed test  name424 [289 of 438 in 39.32s]
+12:43:02     Passed test  name442 [307 of 438 in 39.63s]
+12:43:02     Passed test  name197 [62 of 438 in 39.68s]
+12:43:03     Passed test  name161 [26 of 438 in 39.79s]
+12:43:03     Passed test  name428 [293 of 438 in 39.76s]
+12:43:03     Passed test  name405 [270 of 438 in 39.94s]
+12:43:03     Passed test  name195 [60 of 438 in 39.98s]
+12:43:03     Passed test  name485 [350 of 438 in 39.95s]
+12:43:03     Passed test  name406 [271 of 438 in 40.00s]
+12:43:03     Passed test  name422 [287 of 438 in 40.07s]
+12:43:03     Passed test  name198 [63 of 438 in 40.16s]
+12:43:03     Passed test  name418 [283 of 438 in 40.19s]
+12:43:03     Passed test  name441 [306 of 438 in 40.23s]
+12:43:03     Passed test  name427 [292 of 438 in 40.30s]
+12:43:03     Passed test  name527 [389 of 438 in 8.87s]
+12:43:03     Passed test  name443 [308 of 438 in 40.37s]
+12:43:03     Passed test  name420 [285 of 438 in 40.45s]
+12:43:03     Passed test  name426 [291 of 438 in 40.58s]
+12:43:03     Passed test  name199 [64 of 438 in 40.65s]
+12:43:04     Passed test  name514 [379 of 438 in 40.88s]
+12:43:04     Passed test  name190 [55 of 438 in 40.94s]
+12:43:04     Passed test  name439 [304 of 438 in 40.98s]
+12:43:04     Passed test  name332 [197 of 438 in 41.00s]
+12:43:04     Passed test  name200 [65 of 438 in 41.02s]
+12:43:04     Passed test  name414 [279 of 438 in 41.00s]
+12:43:04     Passed test  name187 [52 of 438 in 41.03s]
+12:43:04     Passed test  name411 [276 of 438 in 41.07s]
+12:43:04     Passed test  name194 [59 of 438 in 41.27s]
+12:43:04     Passed test  name392 [257 of 438 in 41.28s]
+12:43:05     Passed test  name423 [288 of 438 in 41.95s]
+12:43:05     Passed test  name196 [61 of 438 in 42.33s]
+12:43:05     Passed test  name440 [305 of 438 in 42.45s]
+12:43:05     Passed test  name513 [378 of 438 in 42.50s]
+12:43:06     Passed test  name175 [40 of 438 in 42.92s]
+12:43:06     Passed test  name516 [381 of 438 in 42.88s]
+12:43:06     Passed test  name160 [25 of 438 in 43.02s]
+12:43:06     Passed test  name167 [32 of 438 in 43.09s]
+12:43:06     Passed test  name407 [272 of 438 in 43.49s]
+12:43:06     Passed test  name515 [380 of 438 in 43.58s]
+12:43:06     Passed test  name410 [275 of 438 in 43.64s]
+12:43:06     Passed test  name177 [42 of 438 in 43.76s]
+12:43:07     Passed test  name444 [309 of 438 in 43.92s]
+12:43:07     Passed test  name191 [56 of 438 in 43.96s]
+12:43:07     Passed test  name380 [245 of 438 in 44.25s]
+12:43:07     Passed test  name391 [256 of 438 in 44.51s]
+12:43:07     Passed test  name164 [29 of 438 in 44.57s]
+12:43:08     Passed test  name193 [58 of 438 in 44.86s]
+12:43:08     Passed test  name517 [382 of 438 in 44.88s]
+12:43:08     Passed test  name382 [247 of 438 in 44.98s]
+12:43:08     Passed test  name385 [250 of 438 in 45.20s]
+12:43:08     Passed test  name386 [251 of 438 in 45.44s]
+12:43:08    Skipped model name070.name075 (ephemeral)
+12:43:08 Started test name135.name570
+12:43:08 Started test name135.name571
+12:43:08 Started test name135.name572
+12:43:08 Started test name135.name573
+12:43:08 Started test name135.name574
+12:43:08 Started test name135.name575
+12:43:08 Started test name135.name576
+12:43:08     Passed test  name390 [255 of 438 in 45.45s]
+12:43:08     Passed test  name387 [252 of 438 in 45.62s]
+12:43:08     Passed test  name547 [409 of 438 in 12.07s]
+12:43:08     Passed test  name378 [243 of 438 in 45.75s]
+12:43:09     Passed test  name389 [254 of 438 in 46.13s]
+12:43:09     Passed test  name379 [244 of 438 in 46.32s]
+12:43:10     Passed test  name384 [249 of 438 in 47.19s]
+12:43:11     Passed test  name388 [253 of 438 in 47.79s]
+12:43:11     Passed test  name381 [246 of 438 in 47.80s]
+12:43:11     Passed test  name536 [398 of 438 in 14.19s]
+12:43:11     Passed test  name535 [397 of 438 in 14.20s]
+12:43:11     Passed test  name566 [428 of 438 in 8.95s]
+12:43:11     Passed test  name567 [429 of 438 in 9.30s]
+12:43:12     Passed test  name565 [427 of 438 in 14.59s]
+12:43:12     Passed test  name383 [248 of 438 in 49.06s]
+12:43:12     Passed test  name533 [395 of 438 in 15.59s]
+12:43:13     Passed test  name550 [412 of 438 in 16.33s]
+12:43:13     Passed test  name534 [396 of 438 in 16.60s]
+12:43:13     Passed test  name568 [430 of 438 in 11.34s]
+12:43:13     Passed test  name569 [431 of 438 in 11.53s]
+12:43:15     Passed test  name575 [437 of 438 in 6.42s]
+12:43:16     Passed test  name165 [30 of 438 in 52.85s]
+12:43:16     Passed test  name545 [407 of 438 in 19.92s]
+12:43:16     Passed test  name178 [43 of 438 in 53.76s]
+12:43:17     Passed test  name552 [414 of 438 in 20.60s]
+12:43:17     Passed unit_test name518.name520 [384 of 438 in 54.61s]
+12:43:18     Passed test  name546 [408 of 438 in 21.23s]
+12:43:18     Passed unit_test name518.name521 [385 of 438 in 55.10s]
+12:43:18     Passed test  name537 [399 of 438 in 21.50s]
+12:43:18     Passed test  name179 [44 of 438 in 55.16s]
+12:43:18     Passed test  name539 [401 of 438 in 21.58s]
+12:43:20     Passed test  name549 [411 of 438 in 23.58s]
+12:43:20     Passed test  name544 [406 of 438 in 23.77s]
+12:43:20     Passed test  name556 [418 of 438 in 23.81s]
+12:43:21     Passed test  name560 [422 of 438 in 24.19s]
+12:43:21     Passed test  name554 [416 of 438 in 24.49s]
+12:43:21     Passed test  name559 [421 of 438 in 24.78s]
+12:43:21     Passed test  name553 [415 of 438 in 24.82s]
+12:43:22     Passed test  name555 [417 of 438 in 25.26s]
+12:43:22     Passed test  name548 [410 of 438 in 26.03s]
+12:43:23     Passed test  name543 [405 of 438 in 26.16s]
+12:43:23     Passed test  name540 [402 of 438 in 26.34s]
+12:43:23     Passed test  name571 [433 of 438 in 15.00s]
+12:43:24     Passed test  name574 [436 of 438 in 15.54s]
+12:43:24     Passed test  name541 [403 of 438 in 27.77s]
+12:43:24     Passed unit_test name518.name519 [383 of 438 in 1m 1s]
+12:43:25     Passed test  name563 [425 of 438 in 28.18s]
+12:43:26     Passed test  name561 [423 of 438 in 29.23s]
+12:43:27     Passed test  name572 [434 of 438 in 18.32s]
+12:43:27     Passed test  name538 [400 of 438 in 30.34s]
+12:43:28     Passed test  name551 [413 of 438 in 31.19s]
+12:43:29     Passed test  name557 [419 of 438 in 32.99s]
+12:43:30     Passed test  name562 [424 of 438 in 33.36s]
+12:43:30     Passed test  name558 [420 of 438 in 33.91s]
+12:43:30     Passed test  name570 [432 of 438 in 22.23s]
+12:43:31     Passed test  name576 [438 of 438 in 22.34s]
+12:43:31     Passed test  name573 [435 of 438 in 22.40s]
+12:43:32     Passed test  name542 [404 of 438 in 35.18s]
+12:46:00     Passed test  name564 [426 of 438 in 3m 2s]
+12:46:00 Artifact written to target/name115.json
+12:46:00 
+==================== Execution Summary =====================
+Finished 'test' with 6 warnings and 7 errors for target 'name116' [3m 45s]
+Processed: 8 models | 435 tests | 3 unit tests
+Summary: 446 total | 426 success | 5 warn | 7 error | 8 no-op
+Downloading artifacts
+Invocation has finished

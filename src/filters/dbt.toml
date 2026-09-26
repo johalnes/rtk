@@ -138,11 +138,11 @@ expected = """
 name = "cloud run strips wrapper and Started lines, keeps results"
 input = '''
 Sending project to dbt cloud
-Created invocation id 2efef30c-f73d-4f31-887d-f2aa4b1d4530
+Created invocation id 11111111-2222-4333-8444-555555555555
 Waiting for response
 Streaming invocation logs
 12:29:18 Mesh publication resolved for upstream project core: producer environment ID 175956220186999; selection source legacy
-12:29:18 Cloud CLI invocation created: 2efef30c-f73d-4f31-887d-f2aa4b1d4530
+12:29:18 Cloud CLI invocation created: 11111111-2222-4333-8444-555555555555
 12:29:27 Running with dbt=2.0.5
 12:29:27 dbt 2.0.5
 12:29:27 Loading profiles.yml
@@ -161,7 +161,7 @@ Downloading artifacts
 Invocation has finished
 '''
 expected = '''
-Created invocation id 2efef30c-f73d-4f31-887d-f2aa4b1d4530
+Created invocation id 11111111-2222-4333-8444-555555555555
 12:30:01  Succeeded model analytics.stg_orders (view) [33 of 80 in 10.93s]
 12:29:50    Skipped model analytics.int_ephemeral (ephemeral)
 12:29:52     Failed model analytics.stg_broken (view) [16 of 80 in 1.87s]
