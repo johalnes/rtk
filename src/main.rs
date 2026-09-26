@@ -1612,17 +1612,35 @@ fn run_fallback(parse_error: clap::Error) -> Result<i32> {
 
                 // Merge stderr into the text to filter when filter_stderr is enabled;
                 // otherwise emit stderr directly so it is always visible.
+                // The separator repair keeps line boundaries intact when stdout
+                // lacks its final newline (see merge_captured_streams).
                 let combined_raw = if filter.filter_stderr {
-                    format!("{}{}", stdout_raw, stderr_raw)
+                    core::utils::merge_captured_streams(&stdout_raw, &stderr_raw)
                 } else {
                     stdout_raw.to_string()
                 };
                 let success = output.status.success();
-                let (filtered, loss) =
+                let (mut filtered, mut loss) =
                     core::toml_filter::apply_filter_with_info(filter, &combined_raw);
+                // dbt needs a cross-line count check that the TOML noise filter cannot express.
+                let dbt_summary = if filter.name == "dbt"
+                    && args.len() == 2
+                    && matches!(lookup_cmd.as_str(), "dbt run" | "dbt test" | "dbt build")
+                {
+                    cmds::python::dbt_cmd::summarize(&filtered, &args[1])
+                } else {
+                    None
+                };
+                let summarized = dbt_summary.is_some();
+                if let Some(summary) = dbt_summary {
+                    filtered = summary;
+                    loss = core::toml_filter::Lossiness::Whole;
+                }
                 let lossy = !matches!(loss, core::toml_filter::Lossiness::None);
 
-                let hint = if !success {
+                let hint = if summarized {
+                    core::tee::force_tee_hint(&combined_raw, &raw_command)
+                } else if !success {
                     core::tee::tee_and_hint(&combined_raw, &raw_command, exit_code)
                 } else {
                     match &loss {

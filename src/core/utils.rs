@@ -779,6 +779,30 @@ pub fn decode_process_output(bytes: &[u8]) -> String {
     }
 }
 
+/// Join separately captured stdout and stderr into one filterable string
+/// without fusing lines across the stream boundary.
+///
+/// The fallback path captures each stream on its own pipe, so a stdout
+/// fragment without a trailing newline would otherwise fuse with the first
+/// stderr line (`"Result: 1"` + `"Error: …"` → `"Result: 1Error: …"`),
+/// corrupting diagnostics and any savings measured on the fused text. A
+/// separator is inserted only when both streams are nonempty and stdout
+/// lacks its line terminator; every input byte is preserved verbatim
+/// (including a trailing lone `\r`, which still receives the boundary).
+pub fn merge_captured_streams(stdout: &str, stderr: &str) -> String {
+    if stdout.is_empty() {
+        return stderr.to_owned();
+    }
+    if stderr.is_empty() {
+        return stdout.to_owned();
+    }
+    if stdout.ends_with('\n') {
+        format!("{stdout}{stderr}")
+    } else {
+        format!("{stdout}\n{stderr}")
+    }
+}
+
 /// Decode `bytes` line by line, keeping valid UTF-8 lines verbatim and passing
 /// the rest through code page `cp` (lossy UTF-8 when `cp` is `None`).
 ///
@@ -1838,5 +1862,55 @@ mod tests {
 
         // Nothing named and rtk may fetch: npx is the only runner that can.
         assert_eq!(exec_runner(None, MissingTool::Fetch), "npx");
+    }
+
+    #[test]
+    fn test_merge_captured_streams_inserts_missing_boundary() {
+        // Pre-1 stream oracle: stdout without a final newline fused with stderr
+        // produced "Result: 1Error: detail" — diagnostics must survive intact.
+        assert_eq!(
+            merge_captured_streams("Result: 1", "Error: detail\n  context\n"),
+            "Result: 1\nError: detail\n  context\n"
+        );
+    }
+
+    #[test]
+    fn test_merge_captured_streams_empty_and_terminated() {
+        assert_eq!(
+            merge_captured_streams("", "Error: detail\n"),
+            "Error: detail\n"
+        );
+        assert_eq!(merge_captured_streams("Result: 1\n", ""), "Result: 1\n");
+        assert_eq!(merge_captured_streams("", ""), "");
+        // Already-terminated stdout gains no extra separator.
+        assert_eq!(
+            merge_captured_streams("Result: 1\n", "Error: detail\n"),
+            "Result: 1\nError: detail\n"
+        );
+        // CRLF-terminated stdout is terminated: no extra separator.
+        assert_eq!(
+            merge_captured_streams("Result: 1\r\n", "Error: detail\n"),
+            "Result: 1\r\nError: detail\n"
+        );
+        // Trailing lone CR is preserved verbatim and still gets the boundary.
+        assert_eq!(
+            merge_captured_streams("Result: 1\r", "Error: detail\n"),
+            "Result: 1\r\nError: detail\n"
+        );
+    }
+
+    #[test]
+    fn test_merge_captured_streams_keeps_removable_progress_fragment() {
+        // A final stdout fragment matching a removable progress rule must not
+        // take the stderr block down with it: the boundary keeps every stderr
+        // byte on its own lines.
+        let merged = merge_captured_streams(
+            "dbt-fusion 2.0.0-preview.218",
+            "[error] [DbDriverFailed (dbt1308)]: boom\n  context\n",
+        );
+        assert_eq!(
+            merged,
+            "dbt-fusion 2.0.0-preview.218\n[error] [DbDriverFailed (dbt1308)]: boom\n  context\n"
+        );
     }
 }

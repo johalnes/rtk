@@ -2046,6 +2046,7 @@ match_command = "^make\\b"
             "ansible-playbook",
             "brew-install",
             "composer-install",
+            "dbt",
             "df",
             "dotnet-build",
             "du",
@@ -2102,8 +2103,8 @@ match_command = "^make\\b"
         let filters = make_filters(BUILTIN_TOML);
         assert_eq!(
             filters.len(),
-            62,
-            "Expected exactly 62 built-in filters, got {}. \
+            63,
+            "Expected exactly 63 built-in filters, got {}. \
              Update this count when adding/removing filters in src/filters/.",
             filters.len()
         );
@@ -2189,8 +2190,73 @@ match_command = "^make\\b"
         );
     }
 
-    /// Verify that adding a new filter entry to any TOML content makes it
-    /// immediately discoverable via find_filter_in — simulating how a new
+    /// Pre-1 invocation contract for the dbt filter: exact bare
+    /// `run`/`test`/`build` match; every flag-bearing, prefixed, wrapped,
+    /// or compound form bypasses (executes unchanged). Both the fallback
+    /// runtime lookup and the hook rewrite matcher consult these same
+    /// command strings (after basename/path normalization), so this table
+    /// is the shared executable contract. Discovery classification is
+    /// intentionally absent (Phase 3); argv-boundary cases with spaces and
+    /// quoting belong to the Phase 2 process tests.
+    #[test]
+    fn test_dbt_invocation_match_table() {
+        let filters = make_filters(BUILTIN_TOML);
+        let matched = |cmd: &str| find_filter_in(cmd, &filters).map(|f| f.name.clone());
+
+        // Positive: exact bare commands select the dbt filter.
+        for cmd in ["dbt run", "dbt test", "dbt build"] {
+            assert_eq!(matched(cmd), Some("dbt".to_string()), "command: {cmd}");
+        }
+
+        // Negative: everything else must not select the dbt filter, so the
+        // command executes unchanged with inherited channels and streaming.
+        let bypass = [
+            // Bare binary and version/help requests.
+            "dbt",
+            "dbt --version",
+            "dbt --help",
+            "dbt -h",
+            // Suffix flags on supported subcommands.
+            "dbt run --select my_model",
+            "dbt run --log-format json",
+            "dbt run --log-format=json",
+            "dbt run --debug",
+            "dbt run --quiet",
+            "dbt test --select my_test",
+            "dbt test --vars '{simulate_failure: true}'",
+            "dbt build --target prod",
+            // Global flags before the subcommand.
+            "dbt --log-format json run",
+            "dbt --debug run",
+            // Other subcommands never filter.
+            "dbt run-operation my_macro",
+            "dbt docs generate",
+            "dbt seed",
+            "dbt snapshot",
+            "dbt deps",
+            "dbt list",
+            // Lookalike binaries must not match the `^dbt` anchor.
+            "dbts run",
+            "mydbt run",
+            // Wrapper/compound spellings never match as raw strings: the
+            // rewrite layer matches the inner bare command instead (a bare
+            // `uv run dbt run` still rewrites; flagged inners do not).
+            "uv run dbt run",
+            "uv run --locked dbt test --profiles-dir .",
+            "dbt run | tail -5",
+            "dbt run && dbt test",
+            "FOO=bar dbt run",
+        ];
+        for cmd in bypass {
+            assert_ne!(
+                matched(cmd),
+                Some("dbt".to_string()),
+                "command must bypass the dbt filter: {cmd}"
+            );
+        }
+    }
+
+    /// Verify that adding a new filter entry to any TOML content makes it    /// immediately discoverable via find_filter_in — simulating how a new
     /// src/filters/my-tool.toml would work after cargo build.
     #[test]
     fn test_new_filter_discoverable_after_concat() {
@@ -2211,11 +2277,11 @@ expected = "output line 1\noutput line 2"
         let combined = format!("{}\n\n{}", BUILTIN_TOML, new_filter);
         let filters = make_filters(&combined);
 
-        // All 62 existing filters still present + 1 new = 63
+        // All 63 existing filters still present + 1 new = 64
         assert_eq!(
             filters.len(),
-            63,
-            "Expected 63 filters after concat (62 built-in + 1 new)"
+            64,
+            "Expected 64 filters after concat (63 built-in + 1 new)"
         );
 
         // New filter is discoverable
