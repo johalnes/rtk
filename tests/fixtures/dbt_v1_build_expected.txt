@@ -1,0 +1,6 @@
+00:00:00  15 of 22 FAIL 150 unique_resource_catalog_url .................................. [FAIL 150 in 0.01s]
+00:00:00  [ERROR]: in test unique_resource_catalog_url (models/schema.yml)
+00:00:00    Got 150 results, configured to fail if != 0
+00:00:00    compiled code at target/compiled/pokemon_playground/models/schema.yml/unique_resource_catalog_url.sql
+00:00:00  Done. PASS=14 WARN=0 ERROR=1 SKIP=7 NO-OP=0 REUSED=0 TOTAL=22
+[full output: rtk recall ed9a617ed971]

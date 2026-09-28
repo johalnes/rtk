@@ -1,0 +1,6 @@
+[0m00:00:00  Running with dbt=1.12.5
+[0m00:00:00  Registered adapter: duckdb=1.11.0
+[0m00:00:00  Unable to do partial parsing because config vars, config profile, or config target have changed
+[0m00:00:00  Found 2 models, 20 data tests, 3 sources, 500 macros
+[0m00:00:00  [[33mWARNING[0m]: The selection criterion 'nonexistent_model_xyz' does not match any enabled nodes
+[0m00:00:00  [[33mWARNING[0m]: Nothing to do. Try checking your model configs and model specification args

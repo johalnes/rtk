@@ -1,0 +1,17 @@
+[0m00:00:00  Running with dbt=1.12.5
+[0m00:00:00  Registered adapter: duckdb=1.11.0
+[0m00:00:00  Unable to do partial parsing because saved manifest not found. Starting full parse.
+[0m00:00:00  Found 2 models, 20 data tests, 3 sources, 500 macros
+[0m00:00:00  
+[0m00:00:00  Concurrency: 1 threads (target='dev')
+[0m00:00:00  
+[0m00:00:00  1 of 2 START sql table model analytics.resource_catalog ........................ [RUN]
+[0m00:00:00  1 of 2 OK created sql table model analytics.resource_catalog ................... [[32mOK[0m in 0.04s]
+[0m00:00:00  2 of 2 START sql table model analytics.resource_summary ........................ [RUN]
+[0m00:00:00  2 of 2 OK created sql table model analytics.resource_summary ................... [[32mOK[0m in 0.01s]
+[0m00:00:00  
+[0m00:00:00  Finished running 2 table models in 0 hours 0 minutes and 0.11 seconds (0.11s).
+[0m00:00:00  
+[0m00:00:00  [32mCompleted successfully[0m
+[0m00:00:00  
+[0m00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2

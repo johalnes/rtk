@@ -1,0 +1,14 @@
+[0m00:00:00  Running with dbt=1.12.5
+[0m00:00:00  Registered adapter: duckdb=1.11.0
+[0m00:00:00  Found 2 models, 20 data tests, 3 sources, 500 macros
+[0m00:00:00  
+[0m00:00:00  Concurrency: 1 threads (target='dev')
+[0m00:00:00  
+[0m00:00:00  1 of 1 START sql table model analytics.resource_summary ........................ [RUN]
+[0m00:00:00  1 of 1 OK created sql table model analytics.resource_summary ................... [[32mOK[0m in 0.04s]
+[0m00:00:00  
+[0m00:00:00  Finished running 1 table model in 0 hours 0 minutes and 0.09 seconds (0.09s).
+[0m00:00:00  
+[0m00:00:00  [32mCompleted successfully[0m
+[0m00:00:00  
+[0m00:00:00  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=1

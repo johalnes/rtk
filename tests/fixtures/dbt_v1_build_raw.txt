@@ -1,0 +1,54 @@
+[0m00:00:00  Running with dbt=1.12.5
+[0m00:00:00  Registered adapter: duckdb=1.11.0
+[0m00:00:00  Found 2 models, 20 data tests, 3 sources, 500 macros
+[0m00:00:00  
+[0m00:00:00  Concurrency: 1 threads (target='dev')
+[0m00:00:00  
+[0m00:00:00  1 of 22 START test source_not_null_raw_berry_name .............................. [RUN]
+[0m00:00:00  1 of 22 PASS source_not_null_raw_berry_name .................................... [[32mPASS[0m in 0.02s]
+[0m00:00:00  2 of 22 START test source_not_null_raw_berry_url ............................... [RUN]
+[0m00:00:00  2 of 22 PASS source_not_null_raw_berry_url ..................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  3 of 22 START test source_not_null_raw_location_name ........................... [RUN]
+[0m00:00:00  3 of 22 PASS source_not_null_raw_location_name ................................. [[32mPASS[0m in 0.01s]
+[0m00:00:00  4 of 22 START test source_not_null_raw_location_url ............................ [RUN]
+[0m00:00:00  4 of 22 PASS source_not_null_raw_location_url .................................. [[32mPASS[0m in 0.01s]
+[0m00:00:00  5 of 22 START test source_not_null_raw_pokemon_name ............................ [RUN]
+[0m00:00:00  5 of 22 PASS source_not_null_raw_pokemon_name .................................. [[32mPASS[0m in 0.01s]
+[0m00:00:00  6 of 22 START test source_not_null_raw_pokemon_url ............................. [RUN]
+[0m00:00:00  6 of 22 PASS source_not_null_raw_pokemon_url ................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  7 of 22 START test source_unique_raw_berry_name ................................ [RUN]
+[0m00:00:00  7 of 22 PASS source_unique_raw_berry_name ...................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  8 of 22 START test source_unique_raw_location_name ............................. [RUN]
+[0m00:00:00  8 of 22 PASS source_unique_raw_location_name ................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  9 of 22 START test source_unique_raw_pokemon_name .............................. [RUN]
+[0m00:00:00  9 of 22 PASS source_unique_raw_pokemon_name .................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  10 of 22 START sql table model analytics.resource_catalog ...................... [RUN]
+[0m00:00:00  10 of 22 OK created sql table model analytics.resource_catalog ................. [[32mOK[0m in 0.04s]
+[0m00:00:00  11 of 22 START test not_null_resource_catalog_name ............................. [RUN]
+[0m00:00:00  11 of 22 PASS not_null_resource_catalog_name ................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  12 of 22 START test not_null_resource_catalog_name_length ...................... [RUN]
+[0m00:00:00  12 of 22 PASS not_null_resource_catalog_name_length ............................ [[32mPASS[0m in 0.01s]
+[0m00:00:00  13 of 22 START test not_null_resource_catalog_resource_type .................... [RUN]
+[0m00:00:00  13 of 22 PASS not_null_resource_catalog_resource_type .......................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  14 of 22 START test not_null_resource_catalog_url .............................. [RUN]
+[0m00:00:00  14 of 22 PASS not_null_resource_catalog_url .................................... [[32mPASS[0m in 0.01s]
+[0m00:00:00  15 of 22 START test unique_resource_catalog_url ................................ [RUN]
+[0m00:00:00  15 of 22 FAIL 150 unique_resource_catalog_url .................................. [[31mFAIL 150[0m in 0.01s]
+[0m00:00:00  16 of 22 SKIP relation analytics.resource_summary .............................. [[33mSKIP[0m]
+[0m00:00:00  17 of 22 SKIP test not_null_resource_summary_average_name_length ............... [[33mSKIP[0m]
+[0m00:00:00  18 of 22 SKIP test not_null_resource_summary_longest_name_length ............... [[33mSKIP[0m]
+[0m00:00:00  19 of 22 SKIP test not_null_resource_summary_resource_count .................... [[33mSKIP[0m]
+[0m00:00:00  20 of 22 SKIP test not_null_resource_summary_resource_type ..................... [[33mSKIP[0m]
+[0m00:00:00  21 of 22 SKIP test resource_summary_counts ..................................... [[33mSKIP[0m]
+[0m00:00:00  22 of 22 SKIP test unique_resource_summary_resource_type ....................... [[33mSKIP[0m]
+[0m00:00:00  
+[0m00:00:00  Finished running 2 table models, 20 data tests in 0 hours 0 minutes and 0.19 seconds (0.19s).
+[0m00:00:00  
+[0m00:00:00  [31mCompleted with 1 error, 0 partial successes, and 0 warnings:[0m
+[0m00:00:00  
+[0m00:00:00  [[31mERROR[0m]: in test unique_resource_catalog_url (models/schema.yml)
+[0m00:00:00    Got 150 results, configured to fail if != 0
+[0m00:00:00  
+[0m00:00:00    compiled code at target/compiled/pokemon_playground/models/schema.yml/unique_resource_catalog_url.sql
+[0m00:00:00  
+[0m00:00:00  Done. PASS=14 WARN=0 ERROR=1 SKIP=7 NO-OP=0 REUSED=0 TOTAL=22
