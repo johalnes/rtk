@@ -1,0 +1,9 @@
+
+=================== Errors and Warnings ====================
+[error] [DbDriverFailed (dbt1308)]: Database Error in model case_db_error (target/run/pokemon_playground/models/case_db_error.sql)
+  Binder Error: Referenced column "no_such_column" not found in FROM clause!
+  Candidate bindings: "resource_count"
+  
+  LINE 13: where no_such_column = 1
+                 ^
+  (in run/pokemon_playground/models/case_db_error.sql)

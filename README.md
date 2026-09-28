@@ -299,6 +299,9 @@ rtk pulumi stack                # Stack metadata (strips owner/timestamps)
 
 ### Data & Analytics
 ```bash
+rtk dbt run                   # Native totals + warnings/errors; successes/skips omitted
+rtk dbt test                  # Full diagnostics; recover node details with the output hint
+rtk dbt build                 # Compact models/tests/seeds output
 rtk json config.json            # Structure without values
 rtk deps                        # Dependencies summary
 rtk env -f AWS                  # Filtered env vars
@@ -308,6 +311,16 @@ rtk wget <url>                  # Download, strip progress bars
 rtk summary <long command>      # Heuristic summary
 rtk proxy <command>             # Raw passthrough + tracking
 ```
+
+For `dbt run`, `dbt test`, and `dbt build` (Fusion), successful and skipped
+node lines are omitted only when their counts agree with a complete native summary.
+Warnings, failures, diagnostics, and summary totals stay visible. A recovery hint
+opens the original output (normally `rtk recall <id>`); if recovery is disabled or
+unavailable, RTK keeps the full raw output. Missing or inconsistent summaries retain
+individual results. Selection and context flags (`--select`/`-s`, `--exclude`,
+`--selector`, `--target`, `--vars`, etc.) filter the same way with exact argument
+forwarding; unknown, output-changing (`--log-format`, `--help`, ...), or malformed
+flags pass through unchanged.
 
 ### Token Savings Analytics
 ```bash

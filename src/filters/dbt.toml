@@ -1,0 +1,170 @@
+[filters.dbt]
+description = "Compact dbt Fusion run/test/build output — strip startup banner and dividers, keep results and full diagnostics"
+match_command = "^dbt (?:run|test|build)\\z"
+strip_ansi = true
+filter_stderr = true
+strip_lines_matching = [
+  "^\\s*$",
+  "^dbt-fusion [0-9]",
+  "^\\s+Loading profiles\\.yml",
+  "^=+\\s+Execution Summary\\s+=+",
+  "^Sending project to dbt cloud",
+  "^Waiting for response$",
+  "^Streaming invocation logs$",
+  "^Downloading artifacts$",
+  "^Invocation has finished$",
+  "^\\d\\d:\\d\\d:\\d\\d Mesh publication resolved",
+  "^\\d\\d:\\d\\d:\\d\\d Cloud CLI invocation created",
+  "^\\d\\d:\\d\\d:\\d\\d Running with dbt=",
+  "^\\d\\d:\\d\\d:\\d\\d dbt [0-9][0-9.]*$",
+  "^\\d\\d:\\d\\d:\\d\\d Loading profiles\\.yml$",
+  "^\\d\\d:\\d\\d:\\d\\d Extending __dbt_cloud_publications/",
+  "^\\d\\d:\\d\\d:\\d\\d Artifact written to target/",
+  "^\\d\\d:\\d\\d:\\d\\d\\s*$",
+  "^\\d\\d:\\d\\d:\\d\\d Started (model|test|seed|snapshot|unit test|unit_test) ",
+]
+
+# Real-based cases below come from dbt-fusion 2.0.0-preview.218 (DuckDB
+# playground, default text logging). Merged cases concatenate stdout then
+# stderr, matching the fallback's post-capture join for newline-terminated
+# streams. Only the ANSI micro-case is synthetic.
+
+[[tests.dbt]]
+name = "run success keeps per-model results and summary"
+input = '''
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+  Succeeded [  0.04s] model analytics.resource_catalog (table)
+  Succeeded [  0.01s] model analytics.resource_summary (table)
+
+==================== Execution Summary =====================
+Finished 'run' successfully for target 'dev' [881ms]
+Processed: 2 models
+Summary: 2 total | 2 success
+'''
+expected = '''
+  Succeeded [  0.04s] model analytics.resource_catalog (table)
+  Succeeded [  0.01s] model analytics.resource_summary (table)
+Finished 'run' successfully for target 'dev' [881ms]
+Processed: 2 models
+Summary: 2 total | 2 success'''
+
+[[tests.dbt]]
+name = "test warning keeps warned result and summary"
+input = '''
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+     Warned [  0.01s] test  case_warn (tests/case_warn.sql)
+
+==================== Execution Summary =====================
+Finished 'test' with 1 warning for target 'dev' [775ms]
+Processed: 1 test
+Summary: 1 total | 1 warn
+'''
+expected = '''
+     Warned [  0.01s] test  case_warn (tests/case_warn.sql)
+Finished 'test' with 1 warning for target 'dev' [775ms]
+Processed: 1 test
+Summary: 1 total | 1 warn'''
+
+[[tests.dbt]]
+name = "run db error keeps full diagnostic block from stderr"
+input = '''
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+     Failed [  1.01s] model analytics.case_db_error (table)
+
+==================== Execution Summary =====================
+Finished 'run' with 1 error for target 'dev' [1.4s]
+Processed: 1 model
+Summary: 1 total | 1 error
+
+=================== Errors and Warnings ====================
+[error] [DbDriverFailed (dbt1308)]: Database Error in model case_db_error (target/run/pokemon_playground/models/case_db_error.sql)
+  Binder Error: Referenced column "no_such_column" not found in FROM clause!
+  Candidate bindings: "resource_count"
+
+  LINE 13: where no_such_column = 1
+                 ^
+  (in run/pokemon_playground/models/case_db_error.sql)
+'''
+expected = '''
+     Failed [  1.01s] model analytics.case_db_error (table)
+Finished 'run' with 1 error for target 'dev' [1.4s]
+Processed: 1 model
+Summary: 1 total | 1 error
+=================== Errors and Warnings ====================
+[error] [DbDriverFailed (dbt1308)]: Database Error in model case_db_error (target/run/pokemon_playground/models/case_db_error.sql)
+  Binder Error: Referenced column "no_such_column" not found in FROM clause!
+  Candidate bindings: "resource_count"
+  LINE 13: where no_such_column = 1
+                 ^
+  (in run/pokemon_playground/models/case_db_error.sql)'''
+
+[[tests.dbt]]
+name = "run with no selection keeps stderr warnings"
+input = '''
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+
+==================== Execution Summary =====================
+Finished 'run' with 2 warnings for target 'dev' [849ms]
+
+=================== Errors and Warnings ====================
+[warning] [NoNodesForSelectionCriteria (dbt1092)]: The selection criterion 'fqn:nonexistent_model_xyz' does not match any enabled nodes
+[warning] [NoNodesSelected (dbt1601)]: Nothing to do. Try checking your model configs and model specification args
+'''
+expected = '''
+Finished 'run' with 2 warnings for target 'dev' [849ms]
+=================== Errors and Warnings ====================
+[warning] [NoNodesForSelectionCriteria (dbt1092)]: The selection criterion 'fqn:nonexistent_model_xyz' does not match any enabled nodes
+[warning] [NoNodesSelected (dbt1601)]: Nothing to do. Try checking your model configs and model specification args'''
+
+# Synthetic: proves strip_ansi applies before line filtering. Uses a basic
+# string (not a literal string) so ESC can be written as backslash-u-001B.
+[[tests.dbt]]
+name = "strip ANSI codes but keep result line (synthetic)"
+input = """
+dbt-fusion 2.0.0-preview.218
+\u001B[32m  Succeeded [  0.04s] model analytics.m (table)\u001B[0m
+"""
+expected = """
+  Succeeded [  0.04s] model analytics.m (table)"""
+
+# Real-based: dbt Cloud CLI driving Fusion 2.0.5 (Databricks project).
+# Started progress lines and Cloud wrapper have no result content —
+# the terminal Succeeded/Failed/Skipped lines carry the outcome.
+[[tests.dbt]]
+name = "cloud run strips wrapper and Started lines, keeps results"
+input = '''
+Sending project to dbt cloud
+Created invocation id 11111111-2222-4333-8444-555555555555
+Waiting for response
+Streaming invocation logs
+12:29:18 Mesh publication resolved for upstream project core: producer environment ID 175956220186999; selection source legacy
+12:29:18 Cloud CLI invocation created: 11111111-2222-4333-8444-555555555555
+12:29:27 Running with dbt=2.0.5
+12:29:27 dbt 2.0.5
+12:29:27 Loading profiles.yml
+12:29:27 Extending __dbt_cloud_publications/core.json (Cross Project Refs)
+12:29:28 Artifact written to target/semantic_manifest.json
+12:29:50 Started model analytics.stg_orders
+12:30:01  Succeeded model analytics.stg_orders (view) [33 of 80 in 10.93s]
+12:29:50    Skipped model analytics.int_ephemeral (ephemeral)
+12:29:52     Failed model analytics.stg_broken (view) [16 of 80 in 1.87s]
+12:42:08
+==================== Execution Summary =====================
+Finished 'run' with 2 warnings and 13 errors for target 'dev' [12m 41s]
+Processed: 93 models
+Summary: 93 total | 56 success | 1 warn | 13 error | 12 skipped | 11 no-op
+Downloading artifacts
+Invocation has finished
+'''
+expected = '''
+Created invocation id 11111111-2222-4333-8444-555555555555
+12:30:01  Succeeded model analytics.stg_orders (view) [33 of 80 in 10.93s]
+12:29:50    Skipped model analytics.int_ephemeral (ephemeral)
+12:29:52     Failed model analytics.stg_broken (view) [16 of 80 in 1.87s]
+Finished 'run' with 2 warnings and 13 errors for target 'dev' [12m 41s]
+Processed: 93 models
+Summary: 93 total | 56 success | 1 warn | 13 error | 12 skipped | 11 no-op'''

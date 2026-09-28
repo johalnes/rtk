@@ -1,0 +1,31 @@
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+    Passed [  0.01s] test  source_not_null_raw_berry_url
+    Passed [  0.01s] test  source_not_null_raw_pokemon_url
+    Passed [  0.01s] test  source_not_null_raw_location_name
+    Passed [  0.01s] test  source_not_null_raw_location_url
+    Passed [  0.01s] test  source_not_null_raw_berry_name
+    Passed [  0.01s] test  source_not_null_raw_pokemon_name
+    Passed [  0.01s] test  source_unique_raw_berry_name
+    Passed [  0.01s] test  source_unique_raw_pokemon_name
+    Passed [  0.01s] test  source_unique_raw_location_name
+ Succeeded [  0.01s] model analytics.resource_catalog (table)
+    Passed [  0.00s] test  not_null_resource_catalog_name_length
+    Passed [  0.00s] test  not_null_resource_catalog_url
+    Passed [  0.00s] test  not_null_resource_catalog_name
+    Passed [  0.00s] test  not_null_resource_catalog_resource_type
+    Passed [  0.00s] test  unique_resource_catalog_url
+ Succeeded [  0.01s] model analytics.resource_summary (table)
+    Passed [  0.00s] test  not_null_resource_summary_resource_count
+    Passed [  0.00s] test  not_null_resource_summary_longest_name_length
+    Passed [  0.00s] test  not_null_resource_summary_average_name_length
+    Passed [  0.00s] test  not_null_resource_summary_resource_type
+    Passed [  0.00s] test  unique_resource_summary_resource_type
+    Passed [  0.01s] test  resource_summary_counts
+    Failed [  1.01s] model analytics.case_mixed_broken (table)
+   Skipped [-------] model analytics.case_mixed_downstream (table)
+
+==================== Execution Summary =====================
+Finished 'build' with 1 error for target 'dev' [1.4s]
+Processed: 4 models | 20 tests
+Summary: 24 total | 22 success | 1 error | 1 skipped

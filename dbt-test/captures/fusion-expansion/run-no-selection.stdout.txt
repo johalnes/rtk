@@ -1,0 +1,5 @@
+dbt-fusion 2.0.0-preview.218
+   Loading profiles.yml
+
+==================== Execution Summary =====================
+Finished 'run' with 2 warnings for target 'dev' [849ms]

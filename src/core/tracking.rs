@@ -463,6 +463,7 @@ const SUBCOMMAND_ROUTERS: &[&str] = &[
     "aws",
     "bun",
     "cargo",
+    "dbt",
     "deno",
     "docker",
     "dotnet",

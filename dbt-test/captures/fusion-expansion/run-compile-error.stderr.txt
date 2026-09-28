@@ -1,0 +1,5 @@
+
+=================== Errors and Warnings ====================
+[error] [JinjaError (dbt1501)]: Failed to render SQL unknown function: Jinja macro or function `no_such_macro_xyz` is unknown
+(in models/case_compile_error.sql:2:8)
+  --> models/case_compile_error.sql:2:8

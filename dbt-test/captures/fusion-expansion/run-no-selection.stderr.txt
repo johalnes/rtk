@@ -1,0 +1,4 @@
+
+=================== Errors and Warnings ====================
+[warning] [NoNodesForSelectionCriteria (dbt1092)]: The selection criterion 'fqn:nonexistent_model_xyz' does not match any enabled nodes
+[warning] [NoNodesSelected (dbt1601)]: Nothing to do. Try checking your model configs and model specification args

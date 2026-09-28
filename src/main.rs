@@ -19,7 +19,7 @@ use cmds::jvm::{gradlew_cmd, mvn_cmd};
 use cmds::php::{
     ecs_cmd, paratest_cmd, pest_cmd, php_cmd, phpstan_cmd, phpt_cmd, phpunit_cmd, pint_cmd,
 };
-use cmds::python::{mypy_cmd, pip_cmd, pytest_cmd, ruff_cmd, sqlfluff_cmd, uv_cmd};
+use cmds::python::{dbt_cmd, mypy_cmd, pip_cmd, pytest_cmd, ruff_cmd, sqlfluff_cmd, uv_cmd};
 use cmds::ruby::{rake_cmd, rspec_cmd, rubocop_cmd};
 use cmds::rust::{cargo_cmd, runner};
 use cmds::scala::sbt_cmd;
@@ -889,6 +889,14 @@ enum Commands {
         args: Vec<String>,
     },
 
+    /// dbt Fusion run/test/build with compact output (other commands pass through)
+    #[command(disable_help_flag = true)]
+    Dbt {
+        /// dbt subcommand and its arguments (e.g., run, test, build, run --help)
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        args: Vec<String>,
+    },
+
     /// Deno runtime commands with compact output
     Deno {
         #[command(subcommand)]
@@ -1585,85 +1593,61 @@ fn run_fallback(parse_error: clap::Error) -> Result<i32> {
         core::toml_filter::find_matching_filter(&lookup_cmd)
     };
 
+    // dbt text filtering is unsafe when env overrides change console shape
+    // (DBT_LOG_FORMAT=json, DBT_QUIET/DBT_DEBUG): fall through to streaming
+    // passthrough like the native path does. Without this, the bare
+    // absolute-path fallback would capture and merge stderr into stdout.
+    let toml_match = match toml_match {
+        Some(filter) if filter.name == "dbt" && !cmds::python::dbt_cmd::output_env_safe() => None,
+        other => other,
+    };
+
     if let Some(filter) = toml_match {
-        // TOML match: capture stdout for filtering
-        let result = if filter.filter_stderr {
-            // Merge stderr into stdout so the filter can strip banners emitted by tools like liquibase
-            core::utils::resolved_command(&args[0])
-                .child_args(&args[1..])
-                .stdin(std::process::Stdio::inherit())
-                .stdout(std::process::Stdio::piped())
-                .stderr(std::process::Stdio::piped()) // captured for merging
-                .output()
+        // TOML match: shared capture orchestration (also used by native dispatch).
+        let dbt_subcommand = if filter.name == "dbt" && args.len() == 2 {
+            Some(args[1].as_str())
         } else {
-            core::utils::resolved_command(&args[0])
-                .child_args(&args[1..])
-                .stdin(std::process::Stdio::inherit())
-                .stdout(std::process::Stdio::piped()) // capture
-                .stderr(std::process::Stdio::inherit()) // stderr always direct
-                .output()
+            None
         };
-
-        match result {
-            Ok(output) => {
-                let exit_code = core::utils::exit_code_from_output(&output, &raw_command);
-                let stdout_raw = core::utils::decode_process_output(&output.stdout);
-                let stderr_raw = core::utils::decode_process_output(&output.stderr);
-
-                // Merge stderr into the text to filter when filter_stderr is enabled;
-                // otherwise emit stderr directly so it is always visible.
-                let combined_raw = if filter.filter_stderr {
-                    format!("{}{}", stdout_raw, stderr_raw)
-                } else {
-                    stdout_raw.to_string()
-                };
-                let success = output.status.success();
-                let (filtered, loss) =
-                    core::toml_filter::apply_filter_with_info(filter, &combined_raw);
-                let lossy = !matches!(loss, core::toml_filter::Lossiness::None);
-
-                let hint = if !success {
-                    core::tee::tee_and_hint(&combined_raw, &raw_command, exit_code)
-                } else {
-                    match &loss {
-                        core::toml_filter::Lossiness::None => None,
-                        core::toml_filter::Lossiness::Tail {
-                            tee_payload,
-                            tail_offset,
-                        } => {
-                            core::tee::force_tee_tail_hint(tee_payload, &raw_command, *tail_offset)
-                        }
-                        core::toml_filter::Lossiness::Whole => {
-                            core::tee::force_tee_hint(&combined_raw, &raw_command)
-                        }
-                    }
-                };
-
-                // Never emit an unrecoverable truncation marker: fall back to full raw.
-                let shown = if lossy && hint.is_none() {
-                    core::runner::emit_guarded(&combined_raw, None, &combined_raw)
-                } else {
-                    core::runner::emit_guarded(&filtered, hint.as_deref(), &combined_raw)
-                };
-
-                timer.track(
-                    &raw_command,
-                    &format!("rtk:toml {}", raw_command),
-                    &combined_raw,
-                    &shown,
-                );
-                core::tracking::record_parse_failure_silent(&raw_command, &error_message, true);
-
-                Ok(exit_code)
-            }
-            Err(e) => {
-                // Command not found — same behaviour as no-TOML path
-                core::tracking::record_parse_failure_silent(&raw_command, &error_message, false);
-                eprintln!("[rtk: {}]", e);
-                Ok(127)
+        core::toml_filter::run_matched_capture(
+            &args[0],
+            &lookup_cmd,
+            &args,
+            filter,
+            Some(&error_message),
+            dbt_subcommand,
+        )
+    } else {
+        // dbt selected via absolute path (e.g. `rtk /usr/bin/dbt run --select x`):
+        // TOML is bare-only so this never matches above; route eligible selections
+        // through the same shared engine as native, preserving the exact
+        // executable path. Ineligible modes fall through to raw passthrough.
+        {
+            let base = std::path::Path::new(&args[0])
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_else(|| args[0].clone());
+            if base == "dbt"
+                && !core::toml_filter::toml_disabled()
+                && cmds::python::dbt_cmd::output_env_safe()
+                && args.len() >= 2
+                && let Some(sub) = cmds::python::dbt_cmd::selection_eligible(&args[1..])
+            {
+                let raw_prefix = format!("dbt {sub}");
+                if let Some(filter) = core::toml_filter::find_matching_filter(&raw_prefix)
+                    && filter.name == "dbt"
+                {
+                    return core::toml_filter::run_matched_capture(
+                        &args[0],
+                        &raw_prefix,
+                        &args,
+                        filter,
+                        Some(&error_message),
+                        Some(sub),
+                    );
+                }
             }
         }
-    } else {
         // No TOML match: original passthrough behaviour (Stdio::inherit, streaming)
         let status = core::utils::resolved_command(&args[0])
             .child_args(&args[1..])
@@ -1931,18 +1915,101 @@ fn is_native_test_expression(command: &[String]) -> bool {
     }
 }
 
+/// Raw argv index of the `dbt` subcommand in `rtk <globals> dbt <child args>`,
+/// or `None` when this invocation is not `rtk dbt …`.
+///
+/// Only the first positional after `rtk`'s declared root flags counts:
+/// `rtk --ultra-compact dbt` routes here, while `rtk git dbt` (nested
+/// elsewhere) and `rtk -- dbt` (after the separator) parse normally.
+fn find_dbt_subcommand_index_in(argv: &[OsString]) -> Option<usize> {
+    // Skip exactly the root flags Clap declares on `Cli` (`-v`/`--verbose`
+    // count, `--ultra-compact`, `--skip-env`, `-h`/`--help`, `-V`/`--version`;
+    // `-v` clusters count as one token since ArgAction::Count takes no value).
+    // Unknown pre-dbt flags are NOT skipped: they fall through to the real
+    // `Cli` parse, which reports them with Clap's own error.
+    let mut index = 1;
+    while let Some(arg) = argv.get(index) {
+        let text = arg.to_string_lossy();
+        if text == "--" {
+            return None;
+        }
+        if text == "-v"
+            || text == "--verbose"
+            || text == "--ultra-compact"
+            || text == "--skip-env"
+            || text == "-h"
+            || text == "--help"
+            || text == "-V"
+            || text == "--version"
+            || (text.starts_with('-') && !text.is_empty() && text[1..].chars().all(|c| c == 'v'))
+        {
+            index += 1;
+            continue;
+        }
+        break;
+    }
+    match argv.get(index) {
+        Some(arg) if arg.to_string_lossy() == "dbt" => Some(index),
+        _ => None,
+    }
+}
+
+/// The argv Clap parses: the full argv for ordinary commands, or the
+/// `rtk <globals> dbt` prefix plus a `run` placeholder for `rtk dbt …`.
+///
+/// Clap never sees the real child tail, so dbt flags are never consumed as
+/// RTK globals; `run_cli` overwrites the placeholder with the untouched tail
+/// after parsing. `run` forces Clap down the same `Commands::Dbt` branch the
+/// bare tail would take, keeping help/version, globals, and parse errors
+/// identical to every other command.
+fn dbt_probe_argv(raw_argv: &[OsString], dbt_index: Option<usize>) -> Vec<OsString> {
+    match dbt_index {
+        Some(index) => {
+            let mut probe = raw_argv[..=index].to_vec();
+            probe.push(OsString::from("run"));
+            probe
+        }
+        None => raw_argv.to_vec(),
+    }
+}
+
 fn run_cli() -> Result<i32> {
     // Fire-and-forget telemetry ping (1/day, non-blocking)
     core::telemetry::maybe_ping();
 
-    let cli = match Cli::try_parse_from(std::env::args_os()) {
-        Ok(cli) => cli,
-        Err(e) => {
+    // `rtk dbt` forwards child flags verbatim (`--ultra-compact run`,
+    // `--target dev run`, …), so Clap must only see the `rtk <globals> dbt`
+    // prefix: parse that through the real `Cli` with the child tail swapped
+    // for a placeholder, then overwrite the placeholder with the untouched
+    // tail. Help/version, globals, and parse errors behave exactly as on
+    // every other command; the child tail is never parsed or reordered.
+    // Every other command parses the full argv normally.
+    let raw_argv: Vec<OsString> = std::env::args_os().collect();
+    let dbt_index = find_dbt_subcommand_index_in(&raw_argv);
+    let cli = match (
+        dbt_index,
+        Cli::try_parse_from(dbt_probe_argv(&raw_argv, dbt_index)),
+    ) {
+        (_, Err(e)) => {
             if matches!(e.kind(), ErrorKind::DisplayHelp | ErrorKind::DisplayVersion) {
                 e.exit();
             }
             return run_fallback(e);
         }
+        (Some(index), Ok(cli)) => {
+            let tail: Vec<String> = raw_argv[index + 1..]
+                .iter()
+                .map(|a| a.to_string_lossy().into_owned())
+                .collect();
+            match cli.command {
+                Commands::Dbt { .. } => Cli {
+                    command: Commands::Dbt { args: tail },
+                    ..cli
+                },
+                _ => unreachable!("dbt probe must parse to the Dbt command"),
+            }
+        }
+        (None, Ok(cli)) => cli,
     };
 
     // Warn if installed hook is outdated/missing (1/day, non-blocking).
@@ -2859,6 +2926,8 @@ fn run_cli() -> Result<i32> {
 
         Commands::Uv { args } => uv_cmd::run(&args, cli.verbose)?,
 
+        Commands::Dbt { args } => dbt_cmd::run(&args, cli.verbose)?,
+
         Commands::Go { command } => match command {
             GoCommands::Test { args } => go_cmd::run_test(&args, cli.verbose)?,
             GoCommands::Build { args } => go_cmd::run_build(&args, cli.verbose)?,
@@ -3295,6 +3364,7 @@ fn is_operational_command(cmd: &Commands) -> bool {
             | Commands::Rspec { .. }
             | Commands::Pip { .. }
             | Commands::Uv { .. }
+            | Commands::Dbt { .. }
             | Commands::Go { .. }
             | Commands::Sbt { .. }
             | Commands::GolangciLint { .. }
@@ -3310,6 +3380,61 @@ mod tests {
     use super::*;
     use clap::Parser;
     use std::cell::Cell;
+
+    fn os_argv(words: &[&str]) -> Vec<OsString> {
+        words.iter().map(OsString::from).collect()
+    }
+
+    #[test]
+    fn dbt_scan_finds_first_positional_and_ignores_flags() {
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "dbt", "run"])),
+            Some(1)
+        );
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "--ultra-compact", "dbt", "run"])),
+            Some(2)
+        );
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "-vvv", "dbt"])),
+            Some(2)
+        );
+        // Not an rtk subcommand: nested, post-separator, or a different tool.
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "git", "dbt"])),
+            None
+        );
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "--", "dbt", "run"])),
+            None
+        );
+        assert_eq!(
+            find_dbt_subcommand_index_in(&os_argv(&["rtk", "git"])),
+            None
+        );
+    }
+
+    #[test]
+    fn dbt_probe_parses_prefix_and_tail_overwrite_stays_verbatim() {
+        // The real `Cli` parses the prefix; `run_cli` then swaps the
+        // placeholder for the untouched tail. Globals keep root semantics.
+        let raw = os_argv(&["rtk", "-vvv", "dbt", "--ultra-compact", "run"]);
+        let index = find_dbt_subcommand_index_in(&raw);
+        assert_eq!(index, Some(2));
+        let probe = dbt_probe_argv(&raw, index);
+        assert_eq!(probe, os_argv(&["rtk", "-vvv", "dbt", "run"]));
+        let cli = Cli::try_parse_from(&probe).unwrap();
+        assert_eq!(cli.verbose, 3);
+        match cli.command {
+            Commands::Dbt { args } => assert_eq!(args, vec!["run"]),
+            _ => panic!("dbt probe must parse to the Dbt command"),
+        }
+        // Unknown pre-dbt flags error through Clap, never hand-written text.
+        match Cli::try_parse_from(["rtk", "--bogus", "dbt", "run"]) {
+            Ok(_) => panic!("unknown pre-dbt flag must fail to parse"),
+            Err(e) => assert_eq!(e.kind(), ErrorKind::UnknownArgument),
+        }
+    }
 
     #[test]
     fn test_git_commit_single_message() {
@@ -3852,6 +3977,7 @@ mod tests {
             "pint",
             "phpt",
             "uv",
+            "dbt",
             "bun",
             "bunx",
             "deno",

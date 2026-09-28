@@ -1759,6 +1759,13 @@ fn rewrite_segment_inner(
             if crate::core::toml_filter::command_matches_filter(&normalized) {
                 return Some(format!("rtk {}{}", cmd_part, redirect_suffix));
             }
+            // dbt selected run/test/build: route to the native handler, which
+            // makes the authoritative filter/passthrough decision via the same
+            // `selection_eligible` policy. Bare forms already matched above;
+            // ineligible modes (JSON, help, unknown flags) stay unrewritten.
+            if base == "dbt" && crate::cmds::python::dbt_cmd::rewrite_eligible(&normalized) {
+                return Some(format!("rtk {}{}", cmd_part, redirect_suffix));
+            }
             return None;
         }
         Classification::Ignored => return None,
@@ -3373,6 +3380,124 @@ mod tests {
     fn test_rewrite_toml_respects_exclude() {
         let excluded = vec!["jj".to_string()];
         assert_eq!(rewrite_command_no_prefixes("jj log", &excluded), None);
+    }
+
+    // Pre-1 rewrite contract for the dbt filter (mirrors
+    // test_dbt_invocation_match_table in core::toml_filter): exact bare
+    // run/test/build rewrite to `rtk dbt …`; every flag-bearing,
+    // prefixed-unsupported, wrapped, or otherwise non-bare form stays
+    // untouched. Absolute paths and env prefixes are preserved verbatim
+    // while the inner bare command drives the match.
+    #[test]
+    fn test_rewrite_toml_dbt_bare_commands() {
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt run", &[]),
+            Some("rtk dbt run".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt test", &[]),
+            Some("rtk dbt test".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt build", &[]),
+            Some("rtk dbt build".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_absolute_path_and_env_prefix() {
+        assert_eq!(
+            rewrite_command_no_prefixes("/usr/bin/dbt run", &[]),
+            Some("rtk /usr/bin/dbt run".into())
+        );
+        assert_eq!(
+            rewrite_command_no_prefixes("FOO=bar dbt test", &[]),
+            Some("FOO=bar rtk dbt test".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_wrapper_bare_inner() {
+        // `uv run` is a known runner prefix: the inner bare command drives
+        // the match, so filtering still applies end-to-end
+        // (`uv run rtk dbt run` re-enters the fallback with `dbt run`).
+        assert_eq!(
+            rewrite_command_no_prefixes("uv run dbt run", &[]),
+            Some("uv run rtk dbt run".into())
+        );
+    }
+    #[test]
+    fn test_rewrite_toml_dbt_compound() {
+        assert_eq!(
+            rewrite_command_no_prefixes("dbt run && dbt test", &[]),
+            Some("rtk dbt run && rtk dbt test".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_selected_eligible_rewrites_to_native() {
+        // Eligible selections route to `rtk dbt …`, where the native handler
+        // makes the authoritative filter/passthrough decision via the same
+        // `selection_eligible` policy (single source of truth in dbt_cmd).
+        for (cmd, expected) in [
+            ("dbt run --select my_model", "rtk dbt run --select my_model"),
+            (
+                "dbt run --select table_a table_b",
+                "rtk dbt run --select table_a table_b",
+            ),
+            ("dbt test -s tag:daily", "rtk dbt test -s tag:daily"),
+            (
+                "dbt build --select a --exclude b",
+                "rtk dbt build --select a --exclude b",
+            ),
+            (
+                "dbt test --vars '{simulate_failure: true}'",
+                "rtk dbt test --vars '{simulate_failure: true}'",
+            ),
+            (
+                "/usr/bin/dbt run --select my_model",
+                "rtk /usr/bin/dbt run --select my_model",
+            ),
+            ("FOO=bar dbt test -s x", "FOO=bar rtk dbt test -s x"),
+        ] {
+            assert_eq!(
+                rewrite_command_no_prefixes(cmd, &[]),
+                Some(expected.into()),
+                "command: {cmd}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_rewrite_toml_dbt_bypass_forms_not_rewritten() {
+        // NOTE: `uv run …` spellings are governed by the pre-existing
+        // `^uv\s+run` rule (→ `rtk uv …`), never by the dbt filter: the
+        // matcher table already proves those raw strings don't match `^dbt`,
+        // and the uv handler only filters sync/pip-install, so flagged dbt
+        // inners execute unchanged end-to-end.
+        // Eligible `--select`/`--vars` forms now rewrite (test above);
+        // ineligible output-changing, help/version, unknown, and structural
+        // forms stay untouched.
+        for cmd in [
+            "dbt",
+            "dbt --version",
+            "dbt --help",
+            "dbt run --log-format json",
+            "dbt run --log-format=json",
+            "dbt --log-format json run",
+            "dbt run --help",
+            "dbt run --unknown-flag",
+            "dbt run-operation my_macro",
+            "dbt docs generate",
+            "dbt seed",
+            "dbt run | tail -5",
+        ] {
+            assert_eq!(
+                rewrite_command_no_prefixes(cmd, &[]),
+                None,
+                "command: {cmd}"
+            );
+        }
     }
 
     #[test]

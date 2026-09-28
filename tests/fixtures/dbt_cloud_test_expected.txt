@@ -1,0 +1,50 @@
+Created invocation id 11111111-2222-4333-8444-555555555555
+12:42:28     Failed test  name323 (models/name120/name125/name522.yml:44:13) [188 of 438 in 5.58s]
+12:42:30     Warned test  name220 (models/name124/name125/name523.yml:52:13) [85 of 438 in 7.64s]
+12:42:31     Warned test  name214 (models/name124/name125/name523.yml:52:13) [79 of 438 in 8.34s]
+12:42:38     Failed test  name324 (models/name120/name125/name522.yml:33:13) [189 of 438 in 15.25s]
+12:42:39     Failed test  name325 (models/name120/name125/name522.yml:27:13) [190 of 438 in 15.95s]
+12:42:47     Warned test  name262 (models/name124/name125/name523.yml:52:13) [127 of 438 in 24.33s]
+12:42:50     Failed test  name326 (models/name120/name125/name522.yml:40:13) [191 of 438 in 26.86s]
+12:42:51     Warned test  name244 (models/name124/name125/name523.yml:52:13) [109 of 438 in 27.84s]
+12:42:54     Failed test  name147 (models/name120/name125/name522.yml:19:13) [12 of 438 in 30.91s]
+12:42:54     Warned test  name486 (models/name124/name125/name523.yml:58:13) [351 of 438 in 31.63s]
+12:42:56     Failed test  name172 (tests/name125/name172.name126) [37 of 438 in 32.99s]
+12:42:57     Failed test  name173 (tests/name125/name173.name126) [38 of 438 in 34.04s]
+Finished 'test' with 6 warnings and 7 errors for target 'name116' [3m 45s]
+Processed: 8 models | 435 tests | 3 unit tests
+Summary: 446 total | 426 success | 5 warn | 7 error | 8 no-op
+12:42:16 [warning] [UnusedResourceConfigPath (dbt1097)]: Configuration paths exist in your dbt_project.yml name117 name118 do not apply to any resources.
+There are 3 unused configuration paths:
+- models.name119.name120.name121
+- models.name119.name122.name121
+- models.name119.name123.name121
+12:42:28 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name323.525b218e84 (target/run/name119/target/generic_tests/name323.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name323.name126:1:1)
+12:42:38 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name324.74adfd84da (target/run/name119/target/generic_tests/name324.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name324.name126:1:1)
+12:42:39 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name325.2f6e45bafa (target/run/name119/target/generic_tests/name325.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name325.name126:1:1)
+12:42:50 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name326.3e2541c797 (target/run/name119/target/generic_tests/name326.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name326.name126:1:1)
+12:42:54 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name147.name577 (target/run/name119/target/generic_tests/name578.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name578.name126:1:1)
+12:42:56 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name172 (target/run/name119/tests/name125/name172.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/tests/name125/name172.name126:1:1)
+12:42:57 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name173 (target/run/name119/tests/name125/name173.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/tests/name125/name173.name126:1:1)
+[full output: rtk recall 210eeead51fa]

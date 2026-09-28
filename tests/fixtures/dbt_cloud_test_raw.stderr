@@ -1,0 +1,33 @@
+12:42:16 [warning] [UnusedResourceConfigPath (dbt1097)]: Configuration paths exist in your dbt_project.yml name117 name118 do not apply to any resources.
+There are 3 unused configuration paths:
+- models.name119.name120.name121
+- models.name119.name122.name121
+- models.name119.name123.name121
+12:42:28 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name323.525b218e84 (target/run/name119/target/generic_tests/name323.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name323.name126:1:1)
+12:42:38 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name324.74adfd84da (target/run/name119/target/generic_tests/name324.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name324.name126:1:1)
+12:42:39 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name325.2f6e45bafa (target/run/name119/target/generic_tests/name325.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name325.name126:1:1)
+12:42:50 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name326.3e2541c797 (target/run/name119/target/generic_tests/name326.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name326.name126:1:1)
+12:42:54 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name147.name577 (target/run/name119/target/generic_tests/name578.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/target/generic_tests/name578.name126:1:1)
+12:42:56 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name172 (target/run/name119/tests/name125/name172.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/tests/name125/name172.name126:1:1)
+12:42:57 [error] [DbDriverFailed (dbt1308)]: Error materializing test test.name119.name173 (target/run/name119/tests/name125/name173.name126)
+  failed to execute query: databricks: execution error: failed to execute query: unexpected operation state ERROR_STATE: [INSUFFICIENT_PERMISSIONS] Insufficient privileges:
+  User does not have USE CATALOG on Catalog 'name125'. SQLSTATE: 42501
+  (in run/name119/tests/name125/name173.name126:1:1)

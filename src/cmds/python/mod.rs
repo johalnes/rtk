@@ -1,3 +1,4 @@
+pub mod dbt_cmd;
 pub mod mypy_cmd;
 pub mod pip_cmd;
 pub mod pytest_cmd;

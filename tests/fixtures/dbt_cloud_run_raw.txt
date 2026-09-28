@@ -1,0 +1,209 @@
+Sending project to dbt cloud
+Created invocation id 11111111-2222-4333-8444-555555555555
+Waiting for response
+Streaming invocation logs
+12:29:18 Mesh publication resolved for upstream project name001: producer environment ID 10000000000001; selection source legacy
+12:29:18 Mesh publication resolved for upstream project name002: producer environment ID 10000000000002; selection source legacy
+12:29:18 Mesh publication resolved for upstream project name003: producer environment ID 10000000000003; selection source legacy
+12:29:18 Cloud CLI invocation created: 11111111-2222-4333-8444-555555555555
+12:29:27 Running with dbt=2.0.5
+12:29:27 dbt 2.0.5
+12:29:27 Loading profiles.yml
+12:29:27 Extending __dbt_cloud_publications/name003.json (Cross Project Refs)
+12:29:27 Extending __dbt_cloud_publications/name001.json (Cross Project Refs)
+12:29:27 Extending __dbt_cloud_publications/name002.json (Cross Project Refs)
+12:29:28 Artifact written to target/semantic_manifest.json
+12:29:50 Started model name004.name005
+12:29:50 Started model name006.name007
+12:29:50 Started model name008.name009
+12:29:50 Started model name010.name011
+12:29:50 Started model name012.name013
+12:29:50 Started model name012.name014
+12:29:50 Started model name012.name015
+12:29:50 Started model name016.name017
+12:29:50 Started model name016.name018
+12:29:50 Started model name016.name019
+12:29:50 Started model name016.name020
+12:29:50 Started model name016.name021
+12:29:50 Started model name016.name022
+12:29:50 Started model name016.name023
+12:29:50 Started model name016.name024
+12:29:50 Started model name016.name025
+12:29:50 Started model name016.name026
+12:29:50 Started model name016.name027
+12:29:50 Started model name012.name028
+12:29:50 Started model name029.name030
+12:29:50 Started model name031.name032
+12:29:50 Started model name033.name034
+12:29:50 Started model name004.name035
+12:29:50 Started model name006.name036
+12:29:50 Started model name033.name037
+12:29:50 Started model name038.name039
+12:29:50 Started model name038.name040
+12:29:50 Started model name004.name041
+12:29:50 Started model name010.name042
+12:29:50 Started model name010.name043
+12:29:50 Started model name010.name044
+12:29:50 Started model name006.name045
+12:29:50 Started model name004.name046
+12:29:50 Started model name047.name048
+12:29:50 Started model name038.name049
+12:29:50 Started model name010.name050
+12:29:50    Skipped model name004.name041 (ephemeral)
+12:29:50 Started model name004.name051
+12:29:50    Skipped model name004.name046 (ephemeral)
+12:29:50 Started model name004.name052
+12:29:50 Started model name004.name053
+12:29:50    Skipped model name004.name052 (ephemeral)
+12:29:50    Skipped model name004.name051 (ephemeral)
+12:29:50 Started model name004.name054
+12:29:50 Started model name006.name055
+12:29:50 Started model name004.name056
+12:29:52     Failed model name016.name025 (view) [16 of 80 in 1.87s]
+12:29:52     Failed model name016.name023 (view) [14 of 80 in 2.54s]
+12:29:52     Failed model name016.name017 (view) [8 of 80 in 2.56s]
+12:29:53     Failed model name016.name020 (view) [11 of 80 in 3.29s]
+12:29:54     Failed model name016.name019 (view) [10 of 80 in 3.83s]
+12:29:54     Failed model name016.name026 (view) [17 of 80 in 4.37s]
+12:29:55     Failed model name016.name018 (view) [9 of 80 in 4.60s]
+12:29:55     Failed model name016.name022 (view) [13 of 80 in 4.67s]
+12:29:55     Failed model name016.name027 (view) [18 of 80 in 4.76s]
+12:29:55     Failed model name016.name024 (view) [15 of 80 in 4.88s]
+12:29:56     Failed model name016.name021 (view) [12 of 80 in 5.65s]
+12:29:56 Started model name057.name058
+12:29:56    Skipped model name057.name058 (incremental) [39 of 80]
+12:29:56 Started model name059.name060
+12:29:56    Skipped model name059.name060 (table) [40 of 80]
+12:29:56 Started model name061.name062
+12:29:56    Skipped model name061.name062 (table) [41 of 80]
+12:29:56 Started model name061.name063
+12:29:56    Skipped model name061.name063 (table) [42 of 80]
+12:29:56 Started model name061.name064
+12:29:56    Skipped model name061.name064 (table) [43 of 80]
+12:29:58     Failed model name033.name037 (view) [25 of 80 in 8.01s]
+12:29:58 Started model name065.name066
+12:29:58    Skipped model name065.name066 (ephemeral)
+12:29:58 Started model name065.name067
+12:29:58    Skipped model name065.name067 (table) [44 of 80]
+12:29:58     Failed model name033.name034 (view) [22 of 80 in 8.06s]
+12:29:58 Started model name065.name068
+12:29:58    Skipped model name065.name068 (ephemeral)
+12:29:58 Started model name065.name069
+12:29:58    Skipped model name065.name069 (table) [45 of 80]
+12:30:01  Succeeded model name038.name049 (view) [33 of 80 in 10.93s]
+12:30:01 Started model name070.name071
+12:30:01 Started model name070.name072
+12:30:01    Skipped model name070.name072 (ephemeral)
+12:30:01 Started model name006.name073
+12:30:02  Succeeded model name038.name039 (view) [26 of 80 in 12.17s]
+12:30:02 Started model name070.name074
+12:30:02    Skipped model name070.name074 (ephemeral)
+12:30:02 Started model name070.name075
+12:30:02    Skipped model name070.name075 (ephemeral)
+12:30:03  Succeeded model name012.name014 (view) [6 of 80 in 13.19s]
+12:30:03  Succeeded model name012.name028 (view) [19 of 80 in 13.34s]
+12:30:03 Started model name061.name076
+12:30:03  Succeeded model name047.name048 (view) [32 of 80 in 13.40s]
+12:30:03 Started model name004.name077
+12:30:03  Succeeded model name012.name013 (view) [5 of 80 in 13.41s]
+12:30:04  Succeeded model name029.name030 (view) [20 of 80 in 13.56s]
+12:30:04 Started model name061.name078
+12:30:04  Succeeded model name012.name015 (view) [7 of 80 in 13.63s]
+12:30:16  Succeeded model name004.name053 (table) [35 of 80 in 26.04s]
+12:30:19  Succeeded model name008.name009 (table) [3 of 80 in 28.88s]
+12:30:20  Succeeded model name006.name045 (table) [31 of 80 in 29.82s]
+12:30:22  Succeeded model name010.name042 (table) [28 of 80 in 31.98s]
+12:30:24  Succeeded model name004.name035 (table) [23 of 80 in 34.07s]
+12:30:24 Started model name004.name079
+12:30:24 Started model name010.name080
+12:30:25  Succeeded model name006.name073 (table) [47 of 80 in 24.05s]
+12:30:40  Succeeded model name070.name071 (table) [46 of 80 in 38.69s]
+12:30:41  Succeeded model name010.name043 (table) [29 of 80 in 51.27s]
+12:30:41 Started model name010.name081
+12:30:43  Succeeded model name004.name054 (table) [36 of 80 in 53.31s]
+12:30:47  Succeeded model name038.name040 (incremental) [27 of 80 in 56.58s]
+12:30:47 Started model name070.name082
+12:30:47    Skipped model name070.name082 (ephemeral)
+12:30:47 Started model name070.name083
+12:30:47 Started model name006.name084
+12:30:47 Started model name006.name085
+12:30:47 Started model name006.name086
+12:30:48  Succeeded model name010.name050 (table) [34 of 80 in 57.97s]
+12:30:48 Started model name010.name087
+12:30:48    Skipped model name010.name087 (ephemeral)
+12:30:48 Started model name010.name088
+12:30:49  Succeeded model name010.name011 (table) [4 of 80 in 58.63s]
+12:30:51  Succeeded model name061.name078 (table) [50 of 80 in 47.35s]
+12:30:51  Succeeded model name004.name056 (table) [38 of 80 in 1m 1s]
+12:30:56  Succeeded model name006.name007 (table) [2 of 80 in 1m 6s]
+12:30:57  Succeeded model name004.name077 (table) [49 of 80 in 53.43s]
+12:30:57  Succeeded model name006.name055 (table) [37 of 80 in 1m 6s]
+12:30:57 Started model name004.name089
+12:30:57 Started model name004.name090
+12:31:00  Succeeded model name004.name005 (table) [1 of 80 in 1m 9s]
+12:31:01  Succeeded model name004.name079 (table) [51 of 80 in 36.88s]
+12:31:01  Succeeded model name010.name080 (table) [52 of 80 in 36.93s]
+12:31:01  Succeeded model name010.name081 (table) [53 of 80 in 20.22s]
+12:31:02  Succeeded model name061.name076 (table) [48 of 80 in 58.33s]
+12:31:02 Started model name061.name091
+12:31:03  Succeeded model name070.name083 (table) [54 of 80 in 16.56s]
+12:31:03 Started model name070.name092
+12:31:04  Succeeded model name006.name086 (table) [57 of 80 in 17.93s]
+12:31:07  Succeeded model name006.name084 (table) [55 of 80 in 20.43s]
+12:31:09  Succeeded model name061.name091 (table) [61 of 80 in 7.54s]
+12:31:09 Started model name061.name093
+12:31:09 Started model name061.name094
+12:31:09    Skipped model name061.name094 (table) [64 of 80]
+12:31:09  Succeeded model name004.name089 (table) [59 of 80 in 12.38s]
+12:31:11  Succeeded model name006.name085 (table) [56 of 80 in 24.14s]
+12:31:11  Succeeded model name070.name092 (table) [62 of 80 in 7.65s]
+12:31:11 Started model name070.name095
+12:31:15  Succeeded model name061.name093 (table) [63 of 80 in 5.76s]
+12:31:15 Started model name061.name096
+12:31:15    Skipped model name061.name096 (table) [66 of 80]
+12:31:15 Started model name061.name097
+12:31:15    Skipped model name061.name097 (table) [67 of 80]
+12:31:18  Succeeded model name070.name095 (table) [65 of 80 in 7.27s]
+12:31:19  Succeeded model name004.name090 (table) [60 of 80 in 22.16s]
+12:33:34  Succeeded model name010.name044 (table) [30 of 80 in 3m44s]
+12:33:34 Started model name098.name099
+12:33:34 Started model name098.name100
+12:33:34 Started model name010.name101
+12:33:34 Started model name098.name102
+12:33:38  Succeeded model name010.name088 (table) [58 of 80 in 2m50s]
+12:33:38 Started model name010.name103
+12:33:41  Succeeded model name098.name102 (table) [71 of 80 in 7.38s]
+12:33:42  Succeeded model name010.name101 (table) [70 of 80 in 7.81s]
+12:33:43  Succeeded model name098.name099 (table) [68 of 80 in 8.58s]
+12:33:44  Succeeded model name098.name100 (table) [69 of 80 in 10.24s]
+12:36:41  Succeeded model name010.name103 (table) [72 of 80 in 3m 3s]
+12:36:41 Started model name010.name104
+12:36:48  Succeeded model name010.name104 (table) [73 of 80 in 6.23s]
+12:36:48 Started model name098.name105
+12:36:48 Started model name098.name106
+12:36:53  Succeeded model name098.name106 (table) [75 of 80 in 5.00s]
+12:36:56     Warned model name031.name032 (table) [21 of 80 in 7m 6s]
+12:36:56 Started model name031.name107
+12:36:56    Skipped model name031.name107 (ephemeral)
+12:36:56 Started model name108.name109
+12:36:57  Succeeded model name098.name105 (table) [74 of 80 in 8.97s]
+12:36:57 Started model name098.name110
+12:37:01  Succeeded model name108.name109 (table) [76 of 80 in 4.33s]
+12:37:03  Succeeded model name098.name110 (table) [77 of 80 in 6.76s]
+12:39:18  Succeeded model name006.name036 (table) [24 of 80 in 9m28s]
+12:39:18 Started model name006.name111
+12:41:20  Succeeded model name006.name111 (table) [78 of 80 in 2m 1s]
+12:41:20 Started model name004.name112
+12:41:20    Skipped model name004.name112 (ephemeral)
+12:41:20 Started model name004.name113
+12:41:20 Started model name004.name114
+12:42:07  Succeeded model name004.name113 (table) [79 of 80 in 47.07s]
+12:42:08  Succeeded model name004.name114 (table) [80 of 80 in 48.06s]
+12:42:08 Artifact written to target/name115.json
+12:42:08 
+==================== Execution Summary =====================
+Finished 'run' with 2 warnings and 13 errors for target 'name116' [12m 41s]
+Processed: 93 models
+Summary: 93 total | 56 success | 1 warn | 13 error | 12 skipped | 11 no-op
+Downloading artifacts
+Invocation has finished
