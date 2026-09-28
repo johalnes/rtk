@@ -1759,6 +1759,13 @@ fn rewrite_segment_inner(
             if crate::core::toml_filter::command_matches_filter(&normalized) {
                 return Some(format!("rtk {}{}", cmd_part, redirect_suffix));
             }
+            // dbt selected run/test/build: route to the native handler, which
+            // makes the authoritative filter/passthrough decision via the same
+            // `selection_eligible` policy. Bare forms already matched above;
+            // ineligible modes (JSON, help, unknown flags) stay unrewritten.
+            if base == "dbt" && crate::cmds::python::dbt_cmd::rewrite_eligible(&normalized) {
+                return Some(format!("rtk {}{}", cmd_part, redirect_suffix));
+            }
             return None;
         }
         Classification::Ignored => return None,
@@ -3428,21 +3435,58 @@ mod tests {
     }
 
     #[test]
+    fn test_rewrite_toml_dbt_selected_eligible_rewrites_to_native() {
+        // Eligible selections route to `rtk dbt …`, where the native handler
+        // makes the authoritative filter/passthrough decision via the same
+        // `selection_eligible` policy (single source of truth in dbt_cmd).
+        for (cmd, expected) in [
+            ("dbt run --select my_model", "rtk dbt run --select my_model"),
+            (
+                "dbt run --select table_a table_b",
+                "rtk dbt run --select table_a table_b",
+            ),
+            ("dbt test -s tag:daily", "rtk dbt test -s tag:daily"),
+            (
+                "dbt build --select a --exclude b",
+                "rtk dbt build --select a --exclude b",
+            ),
+            (
+                "dbt test --vars '{simulate_failure: true}'",
+                "rtk dbt test --vars '{simulate_failure: true}'",
+            ),
+            (
+                "/usr/bin/dbt run --select my_model",
+                "rtk /usr/bin/dbt run --select my_model",
+            ),
+            ("FOO=bar dbt test -s x", "FOO=bar rtk dbt test -s x"),
+        ] {
+            assert_eq!(
+                rewrite_command_no_prefixes(cmd, &[]),
+                Some(expected.into()),
+                "command: {cmd}"
+            );
+        }
+    }
+
+    #[test]
     fn test_rewrite_toml_dbt_bypass_forms_not_rewritten() {
         // NOTE: `uv run …` spellings are governed by the pre-existing
         // `^uv\s+run` rule (→ `rtk uv …`), never by the dbt filter: the
         // matcher table already proves those raw strings don't match `^dbt`,
         // and the uv handler only filters sync/pip-install, so flagged dbt
         // inners execute unchanged end-to-end.
+        // Eligible `--select`/`--vars` forms now rewrite (test above);
+        // ineligible output-changing, help/version, unknown, and structural
+        // forms stay untouched.
         for cmd in [
             "dbt",
             "dbt --version",
             "dbt --help",
-            "dbt run --select my_model",
             "dbt run --log-format json",
             "dbt run --log-format=json",
-            "dbt test --vars '{simulate_failure: true}'",
             "dbt --log-format json run",
+            "dbt run --help",
+            "dbt run --unknown-flag",
             "dbt run-operation my_macro",
             "dbt docs generate",
             "dbt seed",

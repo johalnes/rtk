@@ -435,6 +435,120 @@ pub fn command_matches_filter(command: &str) -> bool {
     MATCH_SET.is_match(command)
 }
 
+/// Execute one already-matched argv through the TOML capture orchestration:
+/// merged stdout+stderr capture, TOML filter, tee/recall recovery, tracking.
+/// Shared by the generic fallback and native command entry points so both
+/// stay byte-identical.
+///
+/// `executable` selects the binary (`dbt` or an absolute path); `lookup_cmd`
+/// drives filter matching; `child_args` are the exact forwarded child argv;
+/// `parse_error` records a parse-failure row when `Some` (the generic fallback
+/// path; native dispatch passes `None` and tracking goes through `timer`
+/// alone). `dbt_subcommand` enables the guarded dbt footer elision for bare
+/// run/test/build (`None` keeps the plain TOML result).
+pub fn run_matched_capture(
+    executable: &str,
+    lookup_cmd: &str,
+    child_args: &[String],
+    filter: &CompiledFilter,
+    parse_error: Option<&str>,
+    dbt_subcommand: Option<&str>,
+) -> anyhow::Result<i32> {
+    use crate::core::utils::ChildArgExt;
+    let raw_command = child_args.join(" ");
+    let timer = crate::core::tracking::TimedExecution::start();
+    let result = if filter.filter_stderr {
+        crate::core::utils::resolved_command(executable)
+            .child_args(child_args.iter().skip(1))
+            .stdin(std::process::Stdio::inherit())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .output()
+    } else {
+        crate::core::utils::resolved_command(executable)
+            .child_args(child_args.iter().skip(1))
+            .stdin(std::process::Stdio::inherit())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::inherit())
+            .output()
+    };
+    match result {
+        Ok(output) => {
+            let exit_code = crate::core::utils::exit_code_from_output(&output, &raw_command);
+            let stdout_raw = crate::core::utils::decode_process_output(&output.stdout);
+            let stderr_raw = crate::core::utils::decode_process_output(&output.stderr);
+            let combined_raw = if filter.filter_stderr {
+                crate::core::utils::merge_captured_streams(&stdout_raw, &stderr_raw)
+            } else {
+                stdout_raw.to_string()
+            };
+            let success = output.status.success();
+            let (mut filtered, mut loss) = apply_filter_with_info(filter, &combined_raw);
+            // dbt needs a cross-line count check that the TOML noise filter cannot express.
+            // No child_args length check: the native path forwards selected argv
+            // (e.g. `run --select x`) and eligibility is enforced by
+            // `dbt_cmd::selection_eligible` + `summarize` footer validation.
+            // The fallback only sets `dbt_subcommand` for bare argv anyway.
+            let dbt_summary = match (filter.name.as_str(), dbt_subcommand) {
+                ("dbt", Some(sub))
+                    if matches!(lookup_cmd, "dbt run" | "dbt test" | "dbt build") =>
+                {
+                    crate::cmds::python::dbt_cmd::summarize(&filtered, sub)
+                }
+                _ => None,
+            };
+            let summarized = dbt_summary.is_some();
+            if let Some(summary) = dbt_summary {
+                filtered = summary;
+                loss = Lossiness::Whole;
+            }
+            let lossy = !matches!(loss, Lossiness::None);
+            let hint = if summarized {
+                crate::core::tee::force_tee_hint(&combined_raw, &raw_command)
+            } else if !success {
+                crate::core::tee::tee_and_hint(&combined_raw, &raw_command, exit_code)
+            } else {
+                match &loss {
+                    Lossiness::None => None,
+                    Lossiness::Tail {
+                        tee_payload,
+                        tail_offset,
+                    } => crate::core::tee::force_tee_tail_hint(
+                        tee_payload,
+                        &raw_command,
+                        *tail_offset,
+                    ),
+                    Lossiness::Whole => {
+                        crate::core::tee::force_tee_hint(&combined_raw, &raw_command)
+                    }
+                }
+            };
+            let shown = if lossy && hint.is_none() {
+                crate::core::runner::emit_guarded(&combined_raw, None, &combined_raw)
+            } else {
+                crate::core::runner::emit_guarded(&filtered, hint.as_deref(), &combined_raw)
+            };
+            timer.track(
+                &raw_command,
+                &format!("rtk:toml {}", raw_command),
+                &combined_raw,
+                &shown,
+            );
+            if let Some(msg) = parse_error {
+                crate::core::tracking::record_parse_failure_silent(&raw_command, msg, true);
+            }
+            Ok(exit_code)
+        }
+        Err(e) => {
+            if let Some(msg) = parse_error {
+                crate::core::tracking::record_parse_failure_silent(&raw_command, msg, false);
+            }
+            eprintln!("[rtk: {}]", e);
+            Ok(127)
+        }
+    }
+}
+
 fn build_match_set() -> RegexSet {
     let patterns = collect_match_patterns();
     RegexSet::new(&patterns).unwrap_or_else(|_| {

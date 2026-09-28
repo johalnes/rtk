@@ -136,13 +136,43 @@ fn no_toml_bypass_leaves_dbt_output_untouched() {
 }
 
 #[test]
-fn flagged_commands_bypass_filtering_and_forward_arguments() {
+fn ineligible_flags_bypass_filtering_and_forward_arguments() {
+    // `--log-format json` is output-changing: must pass through raw so the
+    // text noise rules never touch structured output. Exact argv + status
+    // forwarding still holds.
     let dir = setup(RAW);
-    let out = command(dir.path(), &["dbt", "run", "--select", "good"])
+    let out = command(dir.path(), &["dbt", "run", "--log-format", "json"])
         .output()
         .unwrap();
     assert_eq!(stdout(&out), RAW);
     assert_eq!(String::from_utf8(out.stderr).unwrap(), ERROR);
+    assert_eq!(
+        fs::read_to_string(dir.path().join("argv.txt")).unwrap(),
+        "run\n--log-format\njson\n"
+    );
+}
+
+#[test]
+fn selected_commands_filter_like_bare_and_forward_exact_argv() {
+    // Ticket 2: eligible `--select` receives the same guarded compression as
+    // bare commands (banner stripped, successes/skips elided on consistent
+    // footer, diagnostics kept, recall hint present), with exact argv.
+    let dir = setup(RAW);
+    let out = command(dir.path(), &["dbt", "run", "--select", "good"])
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(0));
+    let text = stdout(&out);
+    assert!(
+        !text.contains("Succeeded") && !text.contains("Skipped"),
+        "{text}"
+    );
+    assert!(
+        text.contains("Failed") && text.contains("Summary: 3 total"),
+        "{text}"
+    );
+    assert!(text.contains(ERROR.trim()), "{text}");
+    assert!(text.contains("rtk recall"), "{text}");
     assert_eq!(
         fs::read_to_string(dir.path().join("argv.txt")).unwrap(),
         "run\n--select\ngood\n"
