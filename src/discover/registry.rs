@@ -1663,6 +1663,25 @@ fn rewrite_segment_inner(
             {
                 return Some(format!("{} {}", prefix, rewritten));
             }
+            // `uv run --locked dbt run …`: skip uv options to find the inner
+            // command, then splice the rewrite back after the options so uv
+            // flags stay with uv (`uv run --locked rtk dbt run …`).
+            if prefix == "uv run"
+                && let Some((opts_end, inner_start)) = split_uv_run_opts(rest)
+            {
+                let inner = &rest[inner_start..];
+                if let Some(rewritten) =
+                    rewrite_segment_inner(inner, excluded, transparent_prefixes, context, depth + 1)
+                {
+                    // A bare `--` separator leaves no options to splice back;
+                    // emitting the empty segment would double the space.
+                    let opts = rest[..opts_end].trim();
+                    if opts.is_empty() {
+                        return Some(format!("{prefix} {rewritten}"));
+                    }
+                    return Some(format!("{prefix} {opts} {rewritten}"));
+                }
+            }
             // #2768: falling through re-tests the full prefixed string, which is
             // only valid when the wrapper is itself a routable command.
             if !routable {
@@ -2014,6 +2033,118 @@ fn strip_word_prefix<'a>(cmd: &'a str, prefix: &str) -> Option<&'a str> {
     } else {
         None
     }
+}
+
+/// `uv run` boolean flags (no value). Only listed flags are skipped when
+/// searching for the inner command; unknown flags stop the scan so the whole
+/// invocation falls through to the `uv` handler untouched (pinned by
+/// `test_rewrite_uv_run_options_are_passed_through`).
+const UV_RUN_FLAG_OPTS: &[&str] = &[
+    "--locked",
+    "--frozen",
+    "--no-sync",
+    "--offline",
+    "--no-progress",
+    "--quiet",
+    "-q",
+    "--verbose",
+    "--isolated",
+    "--no-project",
+    "--no-env-file",
+    "--refresh",
+    "--no-refresh",
+];
+
+/// `uv run` options taking a separate value (`--project myproj`).
+const UV_RUN_VALUE_OPTS: &[&str] = &[
+    "--project",
+    "--directory",
+    "--package",
+    "--with",
+    "--with-requirements",
+    "--python",
+    "--env-file",
+    "--group",
+    "--extra",
+];
+
+/// True for a known `uv run` option token (`--locked`, `--project=x`, `-q`).
+/// `-v` clusters are uv verbosity, safe to skip. Anything else (e.g.
+/// `--unknown`, `-m`, `--module`) is not ours → stop scanning.
+fn is_uv_run_opt(token: &str) -> bool {
+    if token == "--" || !token.starts_with('-') || token == "-" {
+        return false;
+    }
+    if token.contains('=') {
+        let name = token.split_once('=').map_or(token, |(name, _)| name);
+        return UV_RUN_FLAG_OPTS.contains(&name) || UV_RUN_VALUE_OPTS.contains(&name);
+    }
+    if UV_RUN_FLAG_OPTS.contains(&token) || UV_RUN_VALUE_OPTS.contains(&token) {
+        return true;
+    }
+    // Short `-v` clusters (`-v`, `-vvv`) are uv verbosity.
+    token.len() > 1 && token[1..].chars().all(|c| c == 'v')
+}
+
+/// Split `rest` (after `uv run`) into leading uv options and the inner command.
+/// Returns byte offsets `(opts_end, inner_start)` into `rest`, or `None` when
+/// no inner command follows. Quote-unaware by design: quoted values containing
+/// spaces mis-split, fail inner rewrite, and safely bypass.
+fn split_uv_run_opts(rest: &str) -> Option<(usize, usize)> {
+    let bytes = rest.as_bytes();
+    let mut pos = 0;
+    let mut opts_end = 0;
+    let mut skipped_any = false;
+    while pos < bytes.len() {
+        while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        if pos >= bytes.len() {
+            break;
+        }
+        let start = pos;
+        while pos < bytes.len() && !bytes[pos].is_ascii_whitespace() {
+            pos += 1;
+        }
+        let token = &rest[start..pos];
+        if token == "--" {
+            while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+                pos += 1;
+            }
+            return if pos < bytes.len() {
+                Some((opts_end, pos))
+            } else {
+                None
+            };
+        }
+        if !is_uv_run_opt(token) {
+            // Non-option (inner command) or unknown flag: only split when we
+            // skipped at least one known option; otherwise None keeps the
+            // established fall-through to the `uv` handler.
+            if token.starts_with('-') {
+                return None;
+            }
+            return if skipped_any {
+                Some((opts_end, start))
+            } else {
+                None
+            };
+        }
+        skipped_any = true;
+        if !token.contains('=') && UV_RUN_VALUE_OPTS.contains(&token) {
+            while pos < bytes.len() && bytes[pos].is_ascii_whitespace() {
+                pos += 1;
+            }
+            if pos >= bytes.len() {
+                return None;
+            }
+            while pos < bytes.len() && !bytes[pos].is_ascii_whitespace() {
+                pos += 1;
+            }
+        }
+        opts_end = pos;
+    }
+    None
 }
 
 #[cfg(test)]
@@ -3424,6 +3555,44 @@ mod tests {
         assert_eq!(
             rewrite_command_no_prefixes("uv run dbt run", &[]),
             Some("uv run rtk dbt run".into())
+        );
+    }
+
+    #[test]
+    fn test_rewrite_uv_run_flags_splice_before_inner_rewrite() {
+        // `uv run --locked/--frozen/--project …` flags stay with uv; the inner
+        // eligible dbt command rewrites after them.
+        for (cmd, expected) in [
+            ("uv run --locked dbt run", "uv run --locked rtk dbt run"),
+            (
+                "uv run --locked dbt run --select my_model",
+                "uv run --locked rtk dbt run --select my_model",
+            ),
+            (
+                "uv run --frozen dbt test -s tag:daily",
+                "uv run --frozen rtk dbt test -s tag:daily",
+            ),
+            (
+                "uv run --project myproj dbt test -s x",
+                "uv run --project myproj rtk dbt test -s x",
+            ),
+            (
+                "uv run --locked --offline dbt build --select a",
+                "uv run --locked --offline rtk dbt build --select a",
+            ),
+            // Bare `--` contributes no options: single spaces throughout.
+            ("uv run -- dbt run", "uv run rtk dbt run"),
+        ] {
+            assert_eq!(
+                rewrite_command_no_prefixes(cmd, &[]),
+                Some(expected.into()),
+                "command: {cmd}"
+            );
+        }
+        // Ineligible inners still fall through to the `uv` handler, never dbt.
+        assert_eq!(
+            rewrite_command_no_prefixes("uv run --locked dbt run --log-format json", &[]),
+            Some("rtk uv run --locked dbt run --log-format json".into())
         );
     }
     #[test]
