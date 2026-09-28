@@ -312,8 +312,9 @@ rtk summary <long command>      # Heuristic summary
 rtk proxy <command>             # Raw passthrough + tracking
 ```
 
-For `dbt run`, `dbt test`, and `dbt build` (Fusion), successful and skipped
-node lines are omitted only when their counts agree with a complete native summary.
+For `dbt run`, `dbt test`, and `dbt build` (Fusion v2 and Core 1.x), successful and skipped
+node lines are omitted only when their counts agree with a complete native summary
+(`Summary:` on Fusion, `Done. PASS=…` on Core 1.x).
 Warnings, failures, diagnostics, and summary totals stay visible. A recovery hint
 opens the original output (normally `rtk recall <id>`); if recovery is disabled or
 unavailable, RTK keeps the full raw output. Missing or inconsistent summaries retain

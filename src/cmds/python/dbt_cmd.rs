@@ -17,16 +17,42 @@ static RESULT: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
+/// v1 Core result line: `NN:NN:NN  N of M WORD …[WORD…]`. The leading word and
+/// the bracketed terminal token must agree (handles `WARN 1`, `FAIL 150`, and
+/// node words like `created`/`relation` in between).
+static V1_RESULT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^(?:\d{2}:\d{2}:\d{2}\s+)?\s*\d+ of \d+ (OK|PASS|WARN|FAIL|ERROR|SKIP)\b.*\[(OK|PASS|WARN|FAIL|ERROR|SKIP)(?:[^\]]*)\]$",
+    )
+    .unwrap()
+});
+
+/// v1 Core summary line: optional timestamp, then `Done. PASS=… TOTAL=…`.
+static V1_DONE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(?:\d{2}:\d{2}:\d{2}\s+)?\s*Done\. PASS=").unwrap());
+
 /// Return a compact view only when one complete native footer accounts for every
 /// observed result. None keeps the existing output. Diagnostics after the footer
 /// are never interpreted as result lines, even when they contain matching text.
+///
+/// Fusion output is validated by its `Finished '<cmd>'` footer; dbt Core 1.x
+/// output (no Fusion footer) is validated by its single `Done. PASS=…` counts
+/// line. Any mismatch returns None so the caller keeps TOML-filtered output.
 pub fn summarize(output: &str, command: &str) -> Option<String> {
     if !matches!(command, "run" | "test" | "build") {
         return None;
     }
     let lines: Vec<_> = output.split_inclusive('\n').collect();
     let finished = format!("Finished '{command}' ");
-    let footer = lines.iter().position(|line| line.starts_with(&finished))?;
+    match lines.iter().position(|line| line.starts_with(&finished)) {
+        Some(footer) => summarize_fusion(&lines, footer),
+        None => summarize_v1(&lines),
+    }
+}
+
+/// Guarded elision for Fusion output: `Finished '<cmd>'` footer + `Summary:`
+/// counts.
+fn summarize_fusion(lines: &[&str], footer: usize) -> Option<String> {
     if lines
         .iter()
         .filter(|line| line.starts_with("Finished '"))
@@ -97,12 +123,97 @@ pub fn summarize(output: &str, command: &str) -> Option<String> {
             removed[index] = category == 0 || category == 3;
         }
     }
+    finish_summarize(lines, observed, expected, removed)
+}
+
+/// Guarded elision for dbt Core 1.x output: the single `Done. PASS=… TOTAL=…`
+/// line drives the counts, so elision works whether or not the TOML filter has
+/// already removed the `Finished running` footer above it.
+fn summarize_v1(lines: &[&str]) -> Option<String> {
+    let footer = lines.iter().position(|line| V1_DONE.is_match(line))?;
+    if lines.iter().filter(|line| V1_DONE.is_match(line)).count() != 1 {
+        return None;
+    }
+    // V1_DONE consumes the `PASS=` key as part of locating the footer;
+    // re-anchor at `Done. ` so every token keeps its `KEY=value` shape.
+    let summary = &lines[footer][lines[footer].find("Done. ")? + "Done. ".len()..];
+    let mut fields = [None; 7];
+    for token in summary.split_whitespace() {
+        let (key, value) = token.split_once('=')?;
+        let index = match key {
+            "PASS" => 0,
+            "WARN" => 1,
+            "ERROR" => 2,
+            "SKIP" => 3,
+            "NO-OP" => 4,
+            "REUSED" => 5,
+            "TOTAL" => 6,
+            _ => return None,
+        };
+        if fields[index]
+            .replace(value.parse::<usize>().ok()?)
+            .is_some()
+        {
+            return None;
+        }
+    }
+    let total = fields[6]?;
+    let expected = [
+        fields[0].unwrap_or(0),
+        fields[1].unwrap_or(0),
+        fields[2].unwrap_or(0),
+        fields[3]
+            .unwrap_or(0)
+            .checked_add(fields[4].unwrap_or(0))?
+            .checked_add(fields[5].unwrap_or(0))?,
+    ];
+    if expected
+        .iter()
+        .try_fold(0usize, |sum, count| sum.checked_add(*count))?
+        != total
+    {
+        return None;
+    }
+    let mut observed = [0usize; 4];
+    let mut removed = vec![false; lines.len()];
+    for (index, line) in lines[..footer].iter().enumerate() {
+        // Do not classify text embedded in a diagnostic section as node outcomes.
+        if line.contains("Errors and Warnings") {
+            return None;
+        }
+        if let Some(result) = V1_RESULT.captures(line.trim_end_matches(['\r', '\n'])) {
+            if result[1] != result[2] {
+                return None;
+            }
+            let category = match &result[2] {
+                "OK" | "PASS" => 0,
+                "WARN" => 1,
+                "FAIL" | "ERROR" => 2,
+                "SKIP" => 3,
+                _ => unreachable!(),
+            };
+            observed[category] += 1;
+            removed[index] = category == 0 || category == 3;
+        }
+    }
+    finish_summarize(lines, observed, expected, removed)
+}
+
+/// Shared tail: elide success/skip lines only when every observed result
+/// matches the expected counts and at least one line is removed.
+fn finish_summarize(
+    lines: &[&str],
+    observed: [usize; 4],
+    expected: [usize; 4],
+    removed: Vec<bool>,
+) -> Option<String> {
     if observed != expected || !removed.iter().any(|remove| *remove) {
         return None;
     }
     Some(
         lines
-            .into_iter()
+            .iter()
+            .copied()
             .zip(removed)
             .filter_map(|(line, remove)| (!remove).then_some(line))
             .collect(),
@@ -601,5 +712,154 @@ mod tests {
         assert!(!rewrite_eligible("dbt"));
         // Unbalanced quotes fail closed to bypass.
         assert!(!rewrite_eligible("dbt test --vars '{a: 1"));
+    }
+
+    // --- dbt Core v1 elision (dbt-core 1.12.5 + duckdb 1.11.0) ------------
+    //
+    // Post-ANSI-strip, post-TOML-filter shapes exactly as `summarize` sees
+    // them after the noise filter (src/filters/dbt.toml): the result lines,
+    // the stdout diagnostic block, and the single `Done. PASS=…` footer. The
+    // footer is the v1 count authority; a `Done.` line is never elided.
+
+    const V1_OK_RESULTS: &str = "00:00:00  1 of 2 OK created sql table model analytics.resource_catalog ................... [OK in 0.04s]\n00:00:00  2 of 2 OK created sql table model analytics.resource_summary ................... [OK in 0.01s]";
+    const V1_RUN_DONE: &str =
+        "00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2";
+
+    #[test]
+    fn dbt_v1_success_elides_ok_lines_and_keeps_done_footer() {
+        let input = format!("{V1_OK_RESULTS}\n{V1_RUN_DONE}");
+        assert_eq!(summarize(&input, "run"), Some(V1_RUN_DONE.to_string()));
+    }
+
+    #[test]
+    fn dbt_v1_pass_lines_elided_but_fail_line_and_stdout_diagnostic_kept() {
+        let input = "00:00:00  1 of 2 PASS not_null_resource_catalog_name .................................... [PASS in 0.02s]\n\
+                     00:00:00  2 of 2 FAIL 150 unique_resource_catalog_url .................................. [FAIL 150 in 0.01s]\n\
+                     00:00:00  [ERROR]: in test unique_resource_catalog_url (models/schema.yml)\n\
+                     00:00:00    Got 150 results, configured to fail if != 0\n\
+                     00:00:00    compiled code at target/compiled/pokemon_playground/models/schema.yml/unique_resource_catalog_url.sql\n\
+                     00:00:00  Done. PASS=1 WARN=0 ERROR=1 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2";
+        let expected = "00:00:00  2 of 2 FAIL 150 unique_resource_catalog_url .................................. [FAIL 150 in 0.01s]\n\
+                        00:00:00  [ERROR]: in test unique_resource_catalog_url (models/schema.yml)\n\
+                        00:00:00    Got 150 results, configured to fail if != 0\n\
+                        00:00:00    compiled code at target/compiled/pokemon_playground/models/schema.yml/unique_resource_catalog_url.sql\n\
+                        00:00:00  Done. PASS=1 WARN=0 ERROR=1 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2";
+        assert_eq!(summarize(input, "test"), Some(expected.to_string()));
+    }
+
+    #[test]
+    fn dbt_v1_ok_lines_elided_but_error_line_and_stdout_diagnostic_kept() {
+        let input = "00:00:00  1 of 3 OK created sql table model analytics.resource_catalog ................... [OK in 0.04s]\n\
+                     00:00:00  2 of 3 OK created sql table model analytics.resource_summary ................... [OK in 0.01s]\n\
+                     00:00:00  3 of 3 ERROR creating sql table model analytics.case_db_error .................. [ERROR in 0.01s]\n\
+                     00:00:00  [ERROR]: in model case_db_error (models/case_db_error.sql)\n\
+                     00:00:00    Runtime Error in model case_db_error (models/case_db_error.sql)\n\
+                       Binder Error: Referenced column \"no_such_column\" not found in FROM clause!\n\
+                       Candidate bindings: \"resource_count\"\n\
+                       LINE 13: where no_such_column = 1\n\
+                                      ^\n\
+                     00:00:00    compiled code at target/compiled/pokemon_playground/models/case_db_error.sql\n\
+                     00:00:00  Done. PASS=2 WARN=0 ERROR=1 SKIP=0 NO-OP=0 REUSED=0 TOTAL=3";
+        let expected = "00:00:00  3 of 3 ERROR creating sql table model analytics.case_db_error .................. [ERROR in 0.01s]\n\
+                        00:00:00  [ERROR]: in model case_db_error (models/case_db_error.sql)\n\
+                        00:00:00    Runtime Error in model case_db_error (models/case_db_error.sql)\n\
+                          Binder Error: Referenced column \"no_such_column\" not found in FROM clause!\n\
+                          Candidate bindings: \"resource_count\"\n\
+                          LINE 13: where no_such_column = 1\n\
+                                         ^\n\
+                        00:00:00    compiled code at target/compiled/pokemon_playground/models/case_db_error.sql\n\
+                        00:00:00  Done. PASS=2 WARN=0 ERROR=1 SKIP=0 NO-OP=0 REUSED=0 TOTAL=3";
+        assert_eq!(summarize(input, "run"), Some(expected.to_string()));
+    }
+
+    #[test]
+    fn dbt_v1_pass_elided_but_warn_line_and_stdout_diagnostic_kept() {
+        let input = "00:00:00  1 of 2 PASS not_null_resource_catalog_name .................................... [PASS in 0.02s]\n\
+                     00:00:00  2 of 2 WARN 1 case_warn ........................................................ [WARN 1 in 0.01s]\n\
+                     00:00:00  [WARNING]: in test case_warn (tests/case_warn.sql)\n\
+                     00:00:00  [WARNING]: Got 1 result, configured to warn if >0\n\
+                     00:00:00    compiled code at target/compiled/pokemon_playground/tests/case_warn.sql\n\
+                     00:00:00  Done. PASS=1 WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2";
+        let expected = "00:00:00  2 of 2 WARN 1 case_warn ........................................................ [WARN 1 in 0.01s]\n\
+                        00:00:00  [WARNING]: in test case_warn (tests/case_warn.sql)\n\
+                        00:00:00  [WARNING]: Got 1 result, configured to warn if >0\n\
+                        00:00:00    compiled code at target/compiled/pokemon_playground/tests/case_warn.sql\n\
+                        00:00:00  Done. PASS=1 WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2";
+        assert_eq!(summarize(input, "test"), Some(expected.to_string()));
+    }
+
+    #[test]
+    fn dbt_v1_skipped_lines_are_elided() {
+        let input = "00:00:00  1 of 2 SKIP relation analytics.downstream .............................. [SKIP]\n\
+                     00:00:00  2 of 2 FAIL 150 unique_resource_catalog_url .................................. [FAIL 150 in 0.01s]\n\
+                     00:00:00  Done. PASS=0 WARN=0 ERROR=1 SKIP=1 NO-OP=0 REUSED=0 TOTAL=2";
+        let expected = "00:00:00  2 of 2 FAIL 150 unique_resource_catalog_url .................................. [FAIL 150 in 0.01s]\n\
+                        00:00:00  Done. PASS=0 WARN=0 ERROR=1 SKIP=1 NO-OP=0 REUSED=0 TOTAL=2";
+        assert_eq!(summarize(input, "build"), Some(expected.to_string()));
+    }
+
+    #[test]
+    fn dbt_v1_warn_only_output_is_never_elided() {
+        // Real warning-only capture: every observed result is kept, so there
+        // is nothing to elide and `summarize` must return None.
+        let input = "00:00:00  1 of 1 WARN 1 case_warn ........................................................ [WARN 1 in 0.01s]\n\
+                     00:00:00  [WARNING]: in test case_warn (tests/case_warn.sql)\n\
+                     00:00:00  [WARNING]: Got 1 result, configured to warn if >0\n\
+                     00:00:00    compiled code at target/compiled/pokemon_playground/tests/case_warn.sql\n\
+                     00:00:00  Done. PASS=0 WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=1";
+        assert_eq!(summarize(input, "test"), None);
+    }
+
+    #[test]
+    fn dbt_v1_no_selection_output_is_never_elided() {
+        // Real no-selection capture: two warnings, no `Done.` footer, exit 0.
+        // There is no count authority, so nothing may be removed.
+        let input = "00:00:00  [WARNING]: The selection criterion 'nonexistent_model_xyz' does not match any enabled nodes\n\
+                     00:00:00  [WARNING]: Nothing to do. Try checking your model configs and model specification args";
+        assert_eq!(summarize(input, "run"), None);
+    }
+
+    #[test]
+    fn dbt_v1_inconsistent_done_counts_do_not_remove_results() {
+        for footer in [
+            // No v1 footer at all.
+            "",
+            // Category sum does not equal TOTAL.
+            "00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=3",
+            "00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=1",
+            // Consistent sum but counts disagree with the observed results.
+            "00:00:00  Done. PASS=1 WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2",
+        ] {
+            assert_eq!(
+                summarize(&format!("{V1_OK_RESULTS}\n{footer}"), "run"),
+                None,
+                "{footer}"
+            );
+        }
+    }
+
+    #[test]
+    fn dbt_v1_duplicate_or_unknown_done_fields_do_not_remove_results() {
+        for footer in [
+            "00:00:00  Done. PASS=2 PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2",
+            "00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2 EXTRA=1",
+            "00:00:00  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=2.5",
+        ] {
+            assert_eq!(
+                summarize(&format!("{V1_OK_RESULTS}\n{footer}"), "run"),
+                None,
+                "{footer}"
+            );
+        }
+    }
+
+    #[test]
+    fn dbt_v1_json_log_format_bypasses_the_argv_policy() {
+        // `--log-format json` is output-changing: the v1 text rules and the
+        // `Done.` guard must never see structured output, so eligibility
+        // returns None and the exact argv passes through untouched.
+        assert_eq!(eligible(&["run", "--log-format", "json"]), None);
+        assert_eq!(eligible(&["test", "--log-format", "json"]), None);
+        assert_eq!(eligible(&["build", "--log-format", "json"]), None);
     }
 }
