@@ -1673,7 +1673,12 @@ fn rewrite_segment_inner(
                 if let Some(rewritten) =
                     rewrite_segment_inner(inner, excluded, transparent_prefixes, context, depth + 1)
                 {
-                    let opts = rest[..opts_end].trim_end();
+                    // A bare `--` separator leaves no options to splice back;
+                    // emitting the empty segment would double the space.
+                    let opts = rest[..opts_end].trim();
+                    if opts.is_empty() {
+                        return Some(format!("{prefix} {rewritten}"));
+                    }
                     return Some(format!("{prefix} {opts} {rewritten}"));
                 }
             }
@@ -3575,6 +3580,8 @@ mod tests {
                 "uv run --locked --offline dbt build --select a",
                 "uv run --locked --offline rtk dbt build --select a",
             ),
+            // Bare `--` contributes no options: single spaces throughout.
+            ("uv run -- dbt run", "uv run rtk dbt run"),
         ] {
             assert_eq!(
                 rewrite_command_no_prefixes(cmd, &[]),
