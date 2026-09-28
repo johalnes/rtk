@@ -125,6 +125,23 @@ fn absolute_executable_path_still_matches_the_dbt_filter() {
 }
 
 #[test]
+fn json_env_on_bare_absolute_path_fallback_streams_passthrough() {
+    // DBT_LOG_FORMAT=json changes console shape without any argv flag: the
+    // bare absolute-path fallback (`rtk ./dbt run`) must stream raw like the
+    // native path instead of capturing/merging stderr into stdout.
+    const JSON: &str = "{\"info\":\"run\"}\n{\"info\":\"done\"}\n";
+    const ERR: &str = "some stderr text\n";
+    let dir = setup_case(JSON, ERR);
+    let tool = dir.path().join("dbt");
+    let out = command(dir.path(), &[tool.to_str().unwrap(), "run"])
+        .env("DBT_LOG_FORMAT", "json")
+        .output()
+        .unwrap();
+    assert_eq!(stdout(&out), JSON);
+    assert_eq!(String::from_utf8(out.stderr).unwrap(), ERR);
+}
+
+#[test]
 fn no_toml_bypass_leaves_dbt_output_untouched() {
     let dir = setup(RAW);
     let out = command(dir.path(), &["dbt", "run"])

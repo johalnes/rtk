@@ -1593,6 +1593,15 @@ fn run_fallback(parse_error: clap::Error) -> Result<i32> {
         core::toml_filter::find_matching_filter(&lookup_cmd)
     };
 
+    // dbt text filtering is unsafe when env overrides change console shape
+    // (DBT_LOG_FORMAT=json, DBT_QUIET/DBT_DEBUG): fall through to streaming
+    // passthrough like the native path does. Without this, the bare
+    // absolute-path fallback would capture and merge stderr into stdout.
+    let toml_match = match toml_match {
+        Some(filter) if filter.name == "dbt" && !cmds::python::dbt_cmd::output_env_safe() => None,
+        other => other,
+    };
+
     if let Some(filter) = toml_match {
         // TOML match: shared capture orchestration (also used by native dispatch).
         let dbt_subcommand = if filter.name == "dbt" && args.len() == 2 {
