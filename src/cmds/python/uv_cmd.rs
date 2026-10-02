@@ -6,6 +6,9 @@
 //! recover it. uv is silent unless it resolves or installs, so its own chatter is
 //! left alone rather than stripped: suppressing it would also erase it from the
 //! tee file, breaking recovery.
+//! dbt and nested RTK commands inherit stdio so authentication prompts remain
+//! visible and output already filtered by RTK is not captured a second time.
+//! Unknown uv option layouts also pass through, since the child may be interactive.
 
 use crate::core::runner;
 use crate::core::stream::{self, FilterMode, StdinMode};
@@ -60,7 +63,16 @@ pub fn run(args: &[String], verbose: u8) -> Result<i32> {
         eprintln!("Running: {}", original_cmd);
     }
 
-    if args.first().map(String::as_str) != Some("run") {
+    if args.first().map(String::as_str) != Some("run")
+        || crate::discover::registry::uv_run_command(&args[1..]).is_none_or(|program| {
+            matches!(
+                std::path::Path::new(program)
+                    .file_name()
+                    .and_then(|name| name.to_str()),
+                Some("dbt" | "dbt.exe" | "rtk" | "rtk.exe")
+            )
+        })
+    {
         let status = cmd.status().context("Failed to run uv")?;
         timer.track_passthrough(&original_cmd, &format!("{rtk_cmd} (passthrough)"));
         return Ok(exit_code_from_status(&status, "uv"));

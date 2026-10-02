@@ -2086,6 +2086,27 @@ fn is_uv_run_opt(token: &str) -> bool {
     token.len() > 1 && token[1..].chars().all(|c| c == 'v')
 }
 
+/// Find the executable after known `uv run` options using intact argv tokens.
+/// Unknown options bypass detection, as they do in the hook rewrite scanner.
+pub(crate) fn uv_run_command(args: &[String]) -> Option<&str> {
+    let mut args = args.iter();
+    while let Some(token) = args.next() {
+        if token == "--" {
+            return args.next().map(String::as_str);
+        }
+        if !token.starts_with('-') || token == "-" {
+            return Some(token);
+        }
+        if !is_uv_run_opt(token) {
+            return None;
+        }
+        if !token.contains('=') && UV_RUN_VALUE_OPTS.contains(&token.as_str()) {
+            args.next()?;
+        }
+    }
+    None
+}
+
 /// Split `rest` (after `uv run`) into leading uv options and the inner command.
 /// Returns byte offsets `(opts_end, inner_start)` into `rest`, or `None` when
 /// no inner command follows. Quote-unaware by design: quoted values containing
