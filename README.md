@@ -302,6 +302,7 @@ rtk pulumi stack                # Stack metadata (strips owner/timestamps)
 rtk dbt run                   # Native totals + warnings/errors; successes/skips omitted
 rtk dbt test                  # Full diagnostics; recover node details with the output hint
 rtk dbt build                 # Compact models/tests/seeds output
+rtk uv run dbt debug          # Live stdout/stderr, including OAuth login prompts
 rtk json config.json            # Structure without values
 rtk deps                        # Dependencies summary
 rtk env -f AWS                  # Filtered env vars
